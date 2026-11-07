@@ -185,6 +185,11 @@
         <tr><td><h3>Addressing policy</h3></td><td>Only maya, sam and the owner's agents may instruct the agent that can push. Anyone else is refused by Switch before the agent sees the message.</td><td>A prompt that says "please don't", which a clever message can talk around.</td><td><button class="showme" type="button" data-seek="199.2">Show me</button></td></tr>
       </tbody>
     </table>
+    <div class="shots" style="margin-top:2rem">
+      <figure><img src="assets/shots/gateway-machines.jpg" width="1400" height="875" loading="lazy" alt="Switch's own Gateway UI, Machines page: mac-host and linux-box online, with dev-mac and qa-linux running"><figcaption>Switch's own UI: both machines online, both agents running.</figcaption></figure>
+      <figure><img src="assets/shots/gateway-room-roles.jpg" width="1400" height="875" loading="lazy" alt="Switch's own Gateway UI, room page: implementer is exclusive and held by dev-mac; verifier is held by qa-linux"><figcaption>The roles, and who holds them.</figcaption></figure>
+      <figure><img src="assets/shots/gateway-room-documents.jpg" width="1400" height="875" loading="lazy" alt="Switch's own Gateway UI, room page: the documents conventions, matrix-mac, matrix-linux and repro-log, with the agent that wrote each"><figcaption>The room's documents, and who wrote each one.</figcaption></figure>
+    </div>
   </div>
 </section>
 
@@ -198,7 +203,7 @@
       <li><strong>The Linux "machine" is a container on the same Mac.</strong><p>It is a different environment (operating system, Python, timezone, filesystem), not different hardware. Any machine you can reach over SSH works the same way.</p></li>
       <li><strong>The bugs are seeded.</strong><p>"Three of three caught" is true by construction. This is a demonstration of a workflow, not a benchmark of the agents.</p></li>
       <li><strong>The Mac could have seen one of them.</strong><p>The timezone bug also fails on the Mac if you set <code>TZ=UTC</code>. The point is who notices, who decides which side is wrong, and where that decision is written down.</p></li>
-      <li><strong>The humans in the replay were scripted.</strong><p>The agents and Switch's notices are real. Only macOS on Apple silicon was tested, and the Switch Console GUI path was not.</p></li>
+      <li><strong>The humans in this replay were scripted.</strong><p>The agents and Switch's notices are real. Only macOS on Apple silicon was tested, and the Switch Console GUI path was not.</p></li>
     </ul>
   </div>
 </section>
