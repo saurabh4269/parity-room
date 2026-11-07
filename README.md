@@ -15,7 +15,7 @@ A **Claude Code** agent on the author's Mac and a **Codex** agent on a Linux box
 
 | | |
 |---|---|
-| **Demo video** | _(link added at submission)_ |
+| **Demo video** | https://vimeo.com/1244695983 (2:14, real recorded run, speed-ups labelled) |
 | **Dashboard** | `make dashboard` → http://localhost:8090 (live Env Matrix fed from the room) |
 | **Run it** | `make demo` (1-2 min with cached images; 5-8 min the first time) |
 | **No Switch? Just see the bug** | `make evidence` (Docker + uv only, ~20 s) |
@@ -118,7 +118,7 @@ Prefer the Switch Console GUI? Import `templates/parity-room.template.yaml` (Tem
 | The two agents' owner | The same Switch user, so Switch's cross-owner trust isn't exercised here |
 | The 3 bugs | **Seeded on purpose** (the verified part is that they are genuinely environment-dependent). "3 of 3 caught" is by construction: this is a demonstration, not a benchmark |
 | One bug also reproduces on the Mac with `TZ=UTC` | True. The point isn't that the Mac *can't* see it; it's who notices, who decides which side is wrong, and where that decision is recorded |
-| Scripted humans (`scripts/humans.py`) | Used for rehearsals and the recorded transcript; labelled `[SCRIPTED]` there. The demo video uses people |
+| Scripted humans (`scripts/humans.py`) | Used for rehearsals, the recorded transcript and the demo video. Labelled `[SCRIPTED]` in the transcript and stated on screen in the video |
 | Dashboard | Reads **live** from the room (documents, roles, status) and Mattermost; nothing is hard-coded except labels |
 
 ## Honest limits
@@ -146,6 +146,6 @@ What it took to get there, honestly: runs before these **failed twice for reason
 See [`docs/feedback.md`](docs/feedback.md).
 
 ## Layout
-`templates/` the Switch template · `room/` the prose of instructions, conventions and agent briefs · `tools/parity_matrix.py` deterministic evidence tool · `sut/` the system under test (baseline + the PR with seeded bugs) · `verifier/` the Linux machine image · `scripts/` headless orchestration · `observer/` + `dashboard/` the live Env Matrix (designed in Google Stitch, `dashboard/design/`) · `stack/` is fetched, not committed.
+`templates/` the Switch template · `room/` the prose of instructions, conventions and agent briefs · `tools/parity_matrix.py` deterministic evidence tool · `sut/` the system under test (baseline + the PR with seeded bugs) · `verifier/` the Linux machine image · `scripts/` headless orchestration · `observer/` + `dashboard/` the live Env Matrix (layout explored in Google Stitch, `dashboard/design/`; built and styled by hand) · `stack/` is fetched, not committed.
 
 MIT licensed. Switch itself is Apache-2.0 with the Commons Clause and is not vendored here.
