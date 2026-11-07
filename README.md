@@ -7,6 +7,7 @@ A **Claude Code** agent on the author's Mac and a **Codex** agent on a Linux box
 > Built for the **Flip the Switch hackathon** (WeMakeDevs × DevTools Academy × Switch), Nov 4-7 2026. Track 1: Best Business Workflow.
 
 ### For judges: the 5-minute path
+0. **Project site, with the real run you can scrub:** https://saurabh4269.github.io/parity-room/ (static page in [`site/`](site/); the replay is exported from a real Mattermost channel by [`scripts/export-replay.py`](scripts/export-replay.py)).
 1. **See the problem in 20 s, no Switch needed:** `make evidence` (Docker + `uv`): 3/3 on the Mac, 0/3 on Ubuntu, three different errors.
 2. **See where Switch is used:** the [coverage map](#why-this-needs-switch-the-switch-coverage-map) below, then [`templates/parity-room.template.yaml`](templates/parity-room.template.yaml) (one file creates both agents on their machines *and* the room).
 3. **See it run for real:** [`docs/demo-transcript.md`](docs/demo-transcript.md) is an exported real channel with timings; or `make demo` then `python3 scripts/e2e.py`.
