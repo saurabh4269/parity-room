@@ -87,13 +87,12 @@ The UI renders only what is in this shape. Nothing else is invented: no extra co
 - `prefers-reduced-motion: reduce` disables all animation (including the spinner and live beacon).
 - Every data string is inserted via `textContent` / text nodes. `innerHTML` is never used. `links.room` is only used
   if it starts with `http://` or `https://`.
-- Fonts: `Inter` and `JetBrains Mono` from an optional, non-blocking Google Fonts `<link>`; the UI is fully styled with
-  `ui-sans-serif/system-ui` and `ui-monospace/SF Mono/Menlo` when offline (verified).
+- Fonts: Bricolage Grotesque and Martian Mono (SIL Open Font License), self-hosted in `dashboard/fonts/`; no network font requests. System font stacks are the fallback.
 
 ## Accessibility
 
 Status is always icon + text + color (check / x / spinner arc / dashed clock), never color alone. Text contrast on the
-dark theme is 6.5:1 or better (most pairs above 10:1). `tabular-nums` on all numbers, visible 2 px focus rings,
+was measured at 6.5:1 or better on the previous all-dark theme; the 2026-11-07 restyle (light page, aluminium and dark rows) has NOT been re-measured. `tabular-nums` on all numbers, visible 2 px focus rings,
 skip link, landmarks (`banner`, `main`, `complementary`), ARIA table roles on the matrix, `role=status` live regions for the
 overall and connection chips, `role=alert` for the parity alert.
 
