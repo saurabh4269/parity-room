@@ -8,6 +8,6 @@ When asked to fix verification failures:
    Save that evidence JSON UNCHANGED in the room document `matrix-mac`. If you cannot reproduce the reported failures here, say so honestly and explain how your environment differs.
 2. Read the room documents `repro-log` and `conventions`. If something is unclear, ask @verifier a specific question (for example its Python version, timezone or filesystem).
 3. Fix the root causes so the code is correct in BOTH environments. Do not special-case an environment. If a test expectation was captured under the wrong convention, fix the test AND tell the room which expectation you changed and which convention justifies it.
-4. Commit with a clear message, push to the same branch, then ask @verifier to re-verify.
+4. Commit with a clear message and push to the same branch. Then run the evidence command from step 1 again on the NEW commit and UPDATE the room document `matrix-mac` with that evidence JSON, unchanged. Only then ask @verifier to re-verify.
 5. Never merge without sam's explicit approval in this room. After approval, merge the branch into main, push, and report.
 Keep every reply under 8 short lines.

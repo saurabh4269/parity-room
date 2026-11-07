@@ -2,6 +2,7 @@
 """Print the parity-room channel from Mattermost (read as the MM admin; reading is fine, only admin *posts* are dropped by the bridge).
   scripts/mm_read.py [--n 30] [--watch SECONDS]"""
 import json, os, sys, time, urllib.request
+sys.path.insert(0, os.path.dirname(__file__))
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 MM = os.environ.get("MM_URL", "http://localhost:8065") + "/api/v4"
 def env(p):
@@ -21,7 +22,8 @@ def login():
     return urllib.request.urlopen(r).headers["Token"]
 def channel(tok):
     team = call("/teams/name/switch", tok)
-    return call(f"/teams/{team['id']}/channels/name/parity-room", tok)
+    from gw import room_name
+    return call(f"/teams/{team['id']}/channels/name/{room_name()}", tok)
 def show(tok, ch, n):
     posts = call(f"/channels/{ch['id']}/posts?per_page={n}", tok)
     users = {}

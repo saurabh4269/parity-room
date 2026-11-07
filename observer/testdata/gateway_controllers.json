@@ -1,0 +1,244 @@
+[
+  {
+    "id": "02b78699-45c4-4f67-917b-b238b94b448e",
+    "name": "mac-host",
+    "description": "The author's Mac: macOS arm64, Python 3.15, TZ=Asia/Kolkata, case-insensitive filesystem",
+    "kind": "daemon",
+    "platform": {
+      "os": "macos",
+      "arch": "arm64",
+      "os_version": "27.2.0"
+    },
+    "version": "0.1.1",
+    "release": null,
+    "state": "online",
+    "last_seen_at": "2026-11-07T14:00:27.718059Z",
+    "connection": {
+      "connected_at": "2026-11-07T13:47:27.610920Z",
+      "disconnected_at": null,
+      "disconnect_reason": null
+    },
+    "status": {
+      "seq": 1794060027707,
+      "tools": [
+        {
+          "tool": "git",
+          "state": "ok"
+        },
+        {
+          "tool": "gh",
+          "state": "ok"
+        }
+      ],
+      "agents": [
+        {
+          "since": "2026-11-07T13:48:18.827Z",
+          "process": "running",
+          "agent_id": "03ba4047-a14c-4f3a-8b6a-3d58819b5e55",
+          "attached": true,
+          "sessions": {
+            "ids": [
+              "792b9dc3-552c-596c-bb07-5c51281b0432"
+            ],
+            "active": 1
+          },
+          "directory": "/Users/saurabh/Documents/a/code/work/hackathon/we_make_devs/switch/parity-room/work/dev",
+          "oom_kills": 0,
+          "restarts_10m": 0,
+          "applied_revision": 1
+        }
+      ],
+      "machine": {
+        "platform": {
+          "os": "macos",
+          "arch": "arm64",
+          "os_version": "27.2.0"
+        },
+        "sessions_max": 0,
+        "mem_free_bytes": 158613504,
+        "workspaces_dir": "/Users/saurabh/.switch/agents/localhost-8000",
+        "disk_free_bytes": 263011913728,
+        "mem_total_bytes": 17179869184,
+        "disk_total_bytes": 494332366848,
+        "sessions_running": 1
+      },
+      "providers": [
+        {
+          "auth": "ok",
+          "version": "0.166.0",
+          "provider": "codex",
+          "installed": true,
+          "checked_at": "2026-11-07T13:57:27.556Z",
+          "auth_source": "local"
+        },
+        {
+          "auth": "ok",
+          "version": "2.1.319",
+          "provider": "claude",
+          "installed": true,
+          "checked_at": "2026-11-07T13:57:27.586Z",
+          "auth_source": "local"
+        },
+        {
+          "auth": "unknown",
+          "reason": "provider_not_installed",
+          "version": null,
+          "provider": "antigravity",
+          "installed": false,
+          "checked_at": "2026-11-07T13:57:27.556Z",
+          "auth_source": null
+        },
+        {
+          "auth": "ok",
+          "version": "2026.10.22-27dcf5f",
+          "provider": "cursor",
+          "installed": true,
+          "checked_at": "2026-11-07T13:57:27.556Z",
+          "auth_source": "local"
+        },
+        {
+          "auth": "unknown",
+          "reason": "provider_not_installed",
+          "version": null,
+          "provider": "opencode",
+          "installed": false,
+          "checked_at": "2026-11-07T13:57:27.556Z",
+          "auth_source": null
+        }
+      ],
+      "controller": {
+        "version": "0.1.1",
+        "protocol": 2,
+        "updated_by": "self",
+        "assignment_revision": 1
+      },
+      "observed_at": "2026-11-07T14:00:27.705Z"
+    },
+    "assignment_revision": 1,
+    "workspaces_dir": "/Users/saurabh/.switch/agents/localhost-8000",
+    "created_at": "2026-11-07T13:47:11.283871Z",
+    "revoked_at": null
+  },
+  {
+    "id": "add2399b-cd0c-4165-a31c-ba92cbfabcf4",
+    "name": "linux-box",
+    "description": "Ubuntu 22.04 container: Python 3.10, TZ=UTC, case-sensitive filesystem",
+    "kind": "daemon",
+    "platform": {
+      "os": "linux",
+      "arch": "arm64",
+      "os_version": "7.2.12-orbstack-00394-gbecdd6130068"
+    },
+    "version": "0.1.1",
+    "release": null,
+    "state": "online",
+    "last_seen_at": "2026-11-07T14:00:48.708692Z",
+    "connection": {
+      "connected_at": "2026-11-07T13:47:48.131597Z",
+      "disconnected_at": null,
+      "disconnect_reason": null
+    },
+    "status": {
+      "seq": 1794060048691,
+      "tools": [
+        {
+          "tool": "git",
+          "state": "ok"
+        },
+        {
+          "tool": "gh",
+          "state": "missing"
+        }
+      ],
+      "agents": [
+        {
+          "since": "2026-11-07T13:48:19.399Z",
+          "process": "running",
+          "agent_id": "b7ad1535-d0fd-4a4a-a9fe-ec71b9c55781",
+          "attached": true,
+          "sessions": {
+            "ids": [
+              "5ec1fb9f-b4dd-5895-8f58-e009b7bbabf7"
+            ],
+            "active": 1
+          },
+          "directory": "/home/verifier/sut",
+          "oom_kills": 0,
+          "restarts_10m": 0,
+          "applied_revision": 1
+        }
+      ],
+      "machine": {
+        "platform": {
+          "os": "linux",
+          "arch": "arm64",
+          "os_version": "7.2.12-orbstack-00394-gbecdd6130068"
+        },
+        "sessions_max": 0,
+        "mem_free_bytes": 6832234496,
+        "workspaces_dir": "/home/verifier/.switch/agents/localhost-8000",
+        "disk_free_bytes": 249619451904,
+        "mem_total_bytes": 8392671232,
+        "disk_total_bytes": 265616883712,
+        "sessions_running": 1
+      },
+      "providers": [
+        {
+          "auth": "ok",
+          "version": "0.167.0",
+          "provider": "codex",
+          "installed": true,
+          "checked_at": "2026-11-07T13:57:48.155Z",
+          "auth_source": "local"
+        },
+        {
+          "auth": "unknown",
+          "reason": "provider_not_installed",
+          "version": null,
+          "provider": "claude",
+          "installed": false,
+          "checked_at": "2026-11-07T13:57:48.135Z",
+          "auth_source": null
+        },
+        {
+          "auth": "unknown",
+          "reason": "provider_not_installed",
+          "version": null,
+          "provider": "antigravity",
+          "installed": false,
+          "checked_at": "2026-11-07T13:57:48.135Z",
+          "auth_source": null
+        },
+        {
+          "auth": "unknown",
+          "reason": "provider_not_installed",
+          "version": null,
+          "provider": "cursor",
+          "installed": false,
+          "checked_at": "2026-11-07T13:57:48.135Z",
+          "auth_source": null
+        },
+        {
+          "auth": "unknown",
+          "reason": "provider_not_installed",
+          "version": null,
+          "provider": "opencode",
+          "installed": false,
+          "checked_at": "2026-11-07T13:57:48.135Z",
+          "auth_source": null
+        }
+      ],
+      "controller": {
+        "version": "0.1.1",
+        "protocol": 2,
+        "updated_by": "self",
+        "assignment_revision": 1
+      },
+      "observed_at": "2026-11-07T14:00:48.686Z"
+    },
+    "assignment_revision": 1,
+    "workspaces_dir": "/home/verifier/.switch/agents/localhost-8000",
+    "created_at": "2026-11-07T13:47:47.927895Z",
+    "revoked_at": null
+  }
+]

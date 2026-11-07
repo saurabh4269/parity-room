@@ -1,0 +1,50 @@
+{
+  "694ea3frsi8nzk35d185grrbde": {
+    "id": "694ea3frsi8nzk35d185grrbde",
+    "username": "dave",
+    "is_bot": false,
+    "position": "Intern"
+  },
+  "6f5caiofzbdj8pjpqxc5q5psfy": {
+    "id": "6f5caiofzbdj8pjpqxc5q5psfy",
+    "username": "qa-linux",
+    "is_bot": true,
+    "position": ""
+  },
+  "b38a5z8cx7ggxpbqh64y6zp1ua": {
+    "id": "b38a5z8cx7ggxpbqh64y6zp1ua",
+    "username": "admin",
+    "is_bot": false,
+    "position": ""
+  },
+  "c77575z4gjgkfesce6fb7y1zrc": {
+    "id": "c77575z4gjgkfesce6fb7y1zrc",
+    "username": "user",
+    "is_bot": false,
+    "position": ""
+  },
+  "nij8ii9mw7yi3k7563uq6nsqjo": {
+    "id": "nij8ii9mw7yi3k7563uq6nsqjo",
+    "username": "dev-mac",
+    "is_bot": true,
+    "position": ""
+  },
+  "pot8sn4unbfh8qctqqxzoozy5r": {
+    "id": "pot8sn4unbfh8qctqqxzoozy5r",
+    "username": "switch-admin",
+    "is_bot": true,
+    "position": ""
+  },
+  "sdfrr1yimjgqdbz5u1mowfdjgo": {
+    "id": "sdfrr1yimjgqdbz5u1mowfdjgo",
+    "username": "sam",
+    "is_bot": false,
+    "position": "QA lead"
+  },
+  "wy5jwjh94ty8jxoz6qrpwouexo": {
+    "id": "wy5jwjh94ty8jxoz6qrpwouexo",
+    "username": "maya",
+    "is_bot": false,
+    "position": "PM"
+  }
+}

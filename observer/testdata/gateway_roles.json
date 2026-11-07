@@ -1,0 +1,18 @@
+[
+  {
+    "name": "implementer",
+    "instructions": "Fix what the verifier reports, in the dev environment. One holder at a time so two agents never push over each other.",
+    "exclusive": true,
+    "held_by": [
+      "dev-mac"
+    ]
+  },
+  {
+    "name": "verifier",
+    "instructions": "Run the checks in your own environment and report evidence verbatim. Never edit code or push.",
+    "exclusive": false,
+    "held_by": [
+      "qa-linux"
+    ]
+  }
+]

@@ -7,6 +7,12 @@ import http.cookiejar, json, os, sys, urllib.error, urllib.request
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 BASE = os.environ.get("SWITCH_URL", "http://localhost:8000")
 
+def room_name():
+    """The active room: $PARITY_ROOM, else work/room.txt (written by run-template.py), else 'parity-room'."""
+    if os.environ.get("PARITY_ROOM"): return os.environ["PARITY_ROOM"]
+    try: return open(os.path.join(ROOT, "work", "room.txt")).read().strip() or "parity-room"
+    except OSError: return "parity-room"
+
 def env(path):
     out = {}
     for line in open(path):

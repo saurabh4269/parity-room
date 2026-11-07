@@ -15,8 +15,13 @@ for r in rooms:
 _, agents = g.call("GET", "/gateway/agents")
 for a in agents:
     if a["name"] in ("dev-mac", "qa-linux"):
-        code, data = g.call("DELETE", f"/gateway/management/agents/{a['id']}")
-        print("delete agent", a["name"], code, "" if code < 300 else str(data)[:150])
-time.sleep(2)
+        code, data = g.call("DELETE", f"/gateway/management/agents/{a['id']}")       # un-place it (controller stops it)
+        print("unplace agent", a["name"], code, "" if code < 300 else str(data)[:150])
+        code, data = g.call("DELETE", f"/gateway/agents/{a['id']}")                    # free the name (registry record)
+        print("delete agent record", a["name"], code, "" if code < 300 else str(data)[:150])
+for _ in range(30):                                                                  # wait until the names are really free
+    _, left = g.call("GET", "/gateway/agents")
+    if not [a for a in left if a["name"] in ("dev-mac", "qa-linux")]: break
+    time.sleep(1)
 subprocess.run([os.path.join(ROOT, "scripts", "seed-sut.sh")], check=True)
 print("reset done; now: scripts/run-template.py")

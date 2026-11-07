@@ -1,0 +1,62 @@
+{
+  "id": "cf776c73-06d1-4834-98e9-511498b6c935",
+  "name": "parity-room",
+  "description": "Agents on two different environments verify one change; humans decide.",
+  "channel_type": "channel_public",
+  "admin_mode": false,
+  "agent_count": 2,
+  "connected_user_count": 4,
+  "connected_user_names": [
+    "dave",
+    "maya",
+    "sam",
+    "user"
+  ],
+  "bridge_id": "33c28c9d-1521-44f4-b6af-66ab3685ae69",
+  "bridge_display_name": "Mattermost",
+  "bridge_type": "mattermost",
+  "external_channel_url": "mattermost://mattermost:8065/switch/channels/parity-room",
+  "group_id": null,
+  "group_name": null,
+  "owner_id": null,
+  "owner_name": null,
+  "read_visibility": "public",
+  "write_visibility": "public",
+  "created_at": "2026-11-07 13:48:19.405497+00:00",
+  "archived": false,
+  "transport_room_id": "sw_room_4a6f22e7ba8e4f36bb33085e545355a0",
+  "matrix_room_id": "sw_room_4a6f22e7ba8e4f36bb33085e545355a0",
+  "external_channel_id": "mmdkai1ph7nyug3szeooxqt7ro",
+  "instructions": "This room verifies code changes in more than one environment before humans approve them.\n\nPeople: maya (PM) and sam (QA lead). Agents: dev (role: implementer, runs on a Mac) and verifier (role: verifier, runs on Linux).\n\nHow we work\n- Reply in the thread where you were addressed. At most 8 short lines. Lead with the result.\n- State only what you actually ran in this session. If you could not reproduce something, say so plainly.\n- Shared evidence lives in room documents: `matrix-mac` (written by dev), `matrix-linux` (written by verifier), `repro-log` (written by verifier), `conventions` (written by maya, read-only).\n- To ask another agent something, address its role: @verifier or @implementer.\n- Humans decide. Nothing is merged without sam's explicit approval in this room.\n",
+  "protection_config": null,
+  "observe_config": null,
+  "agent_ids": [
+    "03ba4047-a14c-4f3a-8b6a-3d58819b5e55",
+    "b7ad1535-d0fd-4a4a-a9fe-ec71b9c55781"
+  ],
+  "agent_statuses": {
+    "03ba4047-a14c-4f3a-8b6a-3d58819b5e55": "live",
+    "b7ad1535-d0fd-4a4a-a9fe-ec71b9c55781": "live"
+  },
+  "roles": [
+    {
+      "name": "implementer",
+      "instructions": "Fix what the verifier reports, in the dev environment. One holder at a time so two agents never push over each other.",
+      "exclusive": true,
+      "held_by": [
+        "dev-mac"
+      ]
+    },
+    {
+      "name": "verifier",
+      "instructions": "Run the checks in your own environment and report evidence verbatim. Never edit code or push.",
+      "exclusive": false,
+      "held_by": [
+        "qa-linux"
+      ]
+    }
+  ],
+  "join_event_listeners": [],
+  "archived_at": null,
+  "channel_on_delete": "archived"
+}
