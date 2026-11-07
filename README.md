@@ -13,8 +13,11 @@ A **Claude Code** agent on the author's Mac and a **Codex** agent on a Linux box
 | **Run it** | `make demo` (about 5-8 min the first time) |
 | **No Switch? Just see the bug** | `make evidence` (Docker + uv only, ~20 s) |
 
-![Live dashboard after the run: both environments verified](docs/img/dashboard-verified.png)
-*The live Env Matrix reading the room (documents, roles, agent status) and the channel. Real data from a finished run.*
+| Mid-run: Linux has found the bugs, the Mac hasn't reported yet | After the fix: both environments verified |
+|---|---|
+| ![](docs/img/dashboard-failing.png) | ![](docs/img/dashboard-verified.png) |
+
+*The live Env Matrix reads the room (documents, roles, agent status) and the channel. Both captures are real, taken from a clean-room run.*
 
 | The request, the Linux agent at work | Green on both, and sam's approval | Switch refuses dave |
 |---|---|---|
