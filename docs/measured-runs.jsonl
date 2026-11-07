@@ -1,3 +1,5 @@
 {"ts": "20:27:10", "room": "parity-room-5", "red_s": 90.672, "pushed_s": 128.89, "green_s": 159.402, "ask_s": 162.061, "merge_after_approval_s": 11.048, "pass": true}
 {"ts": "20:30:35", "room": "parity-room-6", "red_s": 102.364, "pushed_s": 137.306, "green_s": 165.572, "ask_s": 168.212, "merge_after_approval_s": 6.708, "pass": true}
 {"ts": "20:33:28", "room": "parity-room-7", "red_s": 80.9, "pushed_s": 114.413, "green_s": 141.79, "ask_s": 145.775, "merge_after_approval_s": 7.388, "pass": true}
+{"ts": "20:46:28", "room": "parity-room", "red_s": 88.484, "pushed_s": 126.496, "green_s": 150.238, "ask_s": 152.306, "merge_after_approval_s": 10.795, "pass": true}
+{"ts": "20:50:10", "room": "parity-room-2", "red_s": 87.518, "pushed_s": 143.422, "green_s": 167.237, "ask_s": 169.496, "merge_after_approval_s": 11.838, "pass": true}

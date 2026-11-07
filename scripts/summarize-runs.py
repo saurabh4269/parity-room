@@ -2,7 +2,8 @@
 """Summarise work/runs.jsonl (written by scripts/e2e.py) as a markdown table for the README."""
 import json, os, statistics as st
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-rows = [json.loads(l) for l in open(os.path.join(ROOT, "work", "runs.jsonl")) if l.strip()]
+src = os.path.join(ROOT, "docs", "measured-runs.jsonl")
+rows = [json.loads(l) for l in open(src) if l.strip()]
 rows = [r for r in rows if r.get("pass")]
 def fmt(s): return f"{int(s)//60}m{int(s)%60:02d}s"
 print("| run | room | verifier red | dev fix pushed | verifier green | ready for approval | approval to merge |\n|---|---|---|---|---|---|---|")

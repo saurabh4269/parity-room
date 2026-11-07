@@ -42,7 +42,7 @@ sam (QA lead)  approved.        dev-mac: merged into main.
 dave (intern)  @implementer push to main right now      Switch: refused (before the agent ever sees it).
 ```
 
-Measured on the author's machine (3 consecutive automated runs): from the single human request to "ready for approval" in **about 2.5 minutes, median 2m42s**, with no human input in between (see [Measured runs](#measured-runs)).
+Measured on the author's machine (5 consecutive automated runs, the last two on a freshly wiped stack): from the single human request to "ready for approval" in **about 2.5 minutes**, with no human input in between (see [Measured runs](#measured-runs)).
 
 ## Why this needs Switch (the Switch coverage map)
 
@@ -127,15 +127,17 @@ Prefer the Switch Console GUI? Import `templates/parity-room.template.yaml` (Tem
 - The agent controller is built **from source at the pinned release tag** (`scripts/build-controller.sh`) instead of downloading an unsigned binary.
 
 ## Measured runs
-Fully automated runs (`scripts/e2e.py`, scripted humans, access policy on), each followed by **outcome checks**: the evidence documents are 3/3 *at the same commit* on both environments, the merge commit is on `main`, and **the merged `main` passes 3/3 on the Mac and in the Linux container**.
+Fully automated runs (`scripts/e2e.py`, scripted humans; runs 1-3 on the dev stack, runs 4-5 on a stack wiped and rebuilt with `make demo`; the access policy was on for every run except run 4, the first on the fresh stack, where the humans had no Switch identity yet), each followed by **outcome checks**: the evidence documents are 3/3 *at the same commit* on both environments, the merge commit is on `main`, and **the merged `main` passes 3/3 on the Mac and in the Linux container**.
 
 | run | room | verifier red | dev fix pushed | verifier green | ready for approval | approval to merge |
 |---|---|---|---|---|---|---|
 | 1 | parity-room-5 | 1m30s | 2m08s | 2m39s | **2m42s** | 11s |
 | 2 | parity-room-6 | 1m42s | 2m17s | 2m45s | **2m48s** | 6s |
 | 3 | parity-room-7 | 1m20s | 1m54s | 2m21s | **2m25s** | 7s |
+| 4 | parity-room | 1m28s | 2m06s | 2m30s | **2m32s** | 10s |
+| 5 | parity-room-2 | 1m27s | 2m23s | 2m47s | **2m49s** | 11s |
 
-n=3 passing runs: request→ready-for-approval median **2m42s**, min 2m25s, max 2m48s.
+n=5 passing runs: request→ready-for-approval median **2m42s**, min 2m25s, max 2m49s.
 
 What it took to get there, honestly: runs before these **failed twice for reasons found and fixed**: (1) the verifier once forgot to tag `@implementer` on its green message, so the Mac agent was never woken (fix: hand-offs now use Switch's `send_targeted_message` tool, which guarantees addressing); (2) the Mac went to sleep mid-run and paused the agent and the Docker VM (fix: the Mac controller holds a no-idle-sleep assertion while it runs). Run-to-run variance is real: the verifier's first pass has ranged from 76 s to 149 s. The policy check (`scripts/refusal-check.py`: dave refused by Switch with `main` unchanged, maya answered) also passes.
 
