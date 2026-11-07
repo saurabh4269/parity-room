@@ -16,7 +16,7 @@
     "parent_agent_id": null,
     "known_agent_type": "claude-code",
     "known_agent_options": {
-      "repo_dir": "/Users/saurabh/Documents/a/code/work/hackathon/we_make_devs/switch/parity-room/work/dev",
+      "repo_dir": "/path/to/parity-room/work/dev",
       "auto_session": true,
       "subagent_name": null,
       "channels_enabled": true

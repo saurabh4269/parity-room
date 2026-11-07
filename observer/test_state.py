@@ -6,6 +6,7 @@ import copy
 import importlib.util
 import json
 import os
+os.environ["PARITY_ROOM"] = "parity-room"   # tests must never depend on the live room (work/room.txt)
 import sys
 import threading
 import unittest
