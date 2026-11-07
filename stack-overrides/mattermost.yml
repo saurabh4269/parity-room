@@ -1,0 +1,6 @@
+# Demo-only tweak to the bundled Mattermost: show agents' thread replies inline in the channel.
+# (Mattermost 11 forces "collapsed reply threads", which hides every agent reply behind a "1 reply" link.)
+services:
+  mattermost:
+    environment:
+      MM_SERVICESETTINGS_COLLAPSEDTHREADS: default_off

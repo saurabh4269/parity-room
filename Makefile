@@ -1,6 +1,6 @@
 # Parity Room: reproduce the whole thing locally.  Needs: Docker (OrbStack/Docker Desktop), Node >= 24 + pnpm >= 10.28,
 # uv, git, Claude Code and Codex signed in on this machine.   `make demo` then open http://localhost:8065 (Mattermost).
-COMPOSE = docker compose -f stack/standalone-docker-compose.yml --profile collab --profile gateway --project-directory stack
+COMPOSE = docker compose -f stack/standalone-docker-compose.yml -f stack-overrides/mattermost.yml --profile collab --profile gateway --project-directory stack
 .PHONY: help demo stack machines codex-auth room policy dashboard evidence reset down clean-secrets
 help:
 	@echo "make demo       # stack + machines + seeded repo + agents + room (about 5-8 min the first time)"

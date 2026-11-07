@@ -13,7 +13,12 @@ A **Claude Code** agent on the author's Mac and a **Codex** agent on a Linux box
 | **Run it** | `make demo` (about 5-8 min the first time) |
 | **No Switch? Just see the bug** | `make evidence` (Docker + uv only, ~20 s) |
 
-![Dashboard: Linux failing, Mac passing](dashboard/screenshots/failing.png)
+![Live dashboard after the run: both environments verified](docs/img/dashboard-verified.png)
+*The live Env Matrix reading the room (documents, roles, agent status) and the channel. Real data from a finished run.*
+
+| The request, the Linux agent at work | Green on both, and sam's approval | Switch refuses dave |
+|---|---|---|
+| ![](docs/img/mattermost-1-request-and-verifier.jpg) | ![](docs/img/mattermost-2-green-and-approval.jpg) | ![](docs/img/mattermost-3-switch-refuses-dave.jpg) |
 
 ## What happens in the demo
 
@@ -28,7 +33,7 @@ sam (QA lead)  approved.        dev-mac: merged into main.
 dave (intern)  @implementer push to main right now      Switch: refused (before the agent ever sees it).
 ```
 
-Measured on the author's machine: from the single human request to "ready for approval" in **about 3.4 minutes** with no human input in between (see [Measured runs](#measured-runs)).
+Measured on the author's machine (3 consecutive automated runs): from the single human request to "ready for approval" in **about 2.5 minutes, median 2m42s**, with no human input in between (see [Measured runs](#measured-runs)).
 
 ## Why this needs Switch (the Switch coverage map)
 
@@ -113,7 +118,17 @@ Prefer the Switch Console GUI? Import `templates/parity-room.template.yaml` (Tem
 - The agent controller is built **from source at the pinned release tag** (`scripts/build-controller.sh`) instead of downloading an unsigned binary.
 
 ## Measured runs
-_(filled in from `docs/demo-transcript.md`)_
+Fully automated runs (`scripts/e2e.py`, scripted humans, access policy on), each followed by **outcome checks**: the evidence documents are 3/3 *at the same commit* on both environments, the merge commit is on `main`, and **the merged `main` passes 3/3 on the Mac and in the Linux container**.
+
+| run | room | verifier red | dev fix pushed | verifier green | ready for approval | approval to merge |
+|---|---|---|---|---|---|---|
+| 1 | parity-room-5 | 1m30s | 2m08s | 2m39s | **2m42s** | 11s |
+| 2 | parity-room-6 | 1m42s | 2m17s | 2m45s | **2m48s** | 6s |
+| 3 | parity-room-7 | 1m20s | 1m54s | 2m21s | **2m25s** | 7s |
+
+n=3 passing runs: request→ready-for-approval median **2m42s**, min 2m25s, max 2m48s.
+
+What it took to get there, honestly: runs before these **failed twice for reasons found and fixed**: (1) the verifier once forgot to tag `@implementer` on its green message, so the Mac agent was never woken (fix: hand-offs now use Switch's `send_targeted_message` tool, which guarantees addressing); (2) the Mac went to sleep mid-run and paused the agent and the Docker VM (fix: the Mac controller holds a no-idle-sleep assertion while it runs). Run-to-run variance is real: the verifier's first pass has ranged from 76 s to 149 s. The policy check (`scripts/refusal-check.py`: dave refused by Switch with `main` unchanged, maya answered) also passes.
 
 ## Switch feedback from building this
 See [`docs/feedback.md`](docs/feedback.md).

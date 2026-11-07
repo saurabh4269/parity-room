@@ -38,6 +38,8 @@ def main():
                                           "first_name": name.capitalize(), "position": title}, tok)
             assert "_error" not in u, u
         req(f"/teams/{team['id']}/members", "POST", {"team_id": team["id"], "user_id": u["id"]}, tok)
+        # show agents' thread replies inline in the channel (otherwise they hide behind "1 reply" links)
+        req(f"/users/{u['id']}/preferences", "PUT", [{"user_id": u["id"], "category": "display_settings", "name": "collapsed_reply_threads", "value": "off"}], tok)
         humans[name] = {"id": u["id"], "password": pw, "title": title}
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as fh: json.dump(humans, fh, indent=2)
