@@ -3,7 +3,7 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive TZ=UTC LANG=C.UTF-8 LC_ALL=C.UTF-8
 RUN apt-get update \
- && apt-get install -y --no-install-recommends python3 python3-pip git curl ca-certificates socat xz-utils procps tini \
+ && apt-get install -y --no-install-recommends python3 python3-pip git curl ca-certificates socat xz-utils procps tini ripgrep \
  && rm -rf /var/lib/apt/lists/*
 # Node >= 22.13 is required by the Switch agent controller (node:sqlite).
 ARG NODE_VERSION=22.13.1

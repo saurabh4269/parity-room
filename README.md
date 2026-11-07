@@ -83,8 +83,9 @@ make evidence      # same 3 checks on the Mac and in an Ubuntu 22.04 / Python 3.
 
 **Tier 3: the live thing** (needs Docker, Node ≥ 24, pnpm ≥ 10.28, `uv`, and Claude Code + Codex signed in on the host)
 ```bash
+make codex-auth    # once: copies your Codex login into a Docker volume for the Linux box (read the caveat in the script)
 make demo          # Switch 0.31.0 + Mattermost, both machines, both agents, the room
-make policy        # (optional) lock dev-mac down so Switch refuses dave
+make policy        # lock dev-mac down so Switch refuses dave (make reset does this for you)
 make dashboard     # http://localhost:8090
 # open http://localhost:8065 (team "switch", channel parity-room), sign in as maya (credentials: work/humans.json), then:
 #   @verifier please verify branch feat/weekly-report on your side and tell us what you find.

@@ -18,9 +18,10 @@ case "${1:-status}" in
         --description "The author's Mac: macOS arm64, Python 3.15, TZ=$TZ, case-insensitive filesystem" \
         --secret-store file --data-dir "$DATA"
     fi
-    nohup "$BIN" run --data-dir "$DATA" >> "$LOG" 2>&1 &
+    # caffeinate -i: the Mac must stay awake while it hosts an agent (a sleeping Mac pauses the agent AND the Docker VM)
+    nohup caffeinate -i "$BIN" run --data-dir "$DATA" >> "$LOG" 2>&1 &
     echo $! > "$ROOT/work/controller-mac.pid"; echo "mac-host controller started (pid $(cat "$ROOT/work/controller-mac.pid")), log: work/logs/controller-mac.log";;
-  stop)   [ -f "$ROOT/work/controller-mac.pid" ] && kill "$(cat "$ROOT/work/controller-mac.pid")" 2>/dev/null || true; echo stopped;;
+  stop)   pkill -f "controller-mac-data" 2>/dev/null || true; echo stopped;;
   status) "$BIN" status --data-dir "$DATA";;
   logs)   tail -n 40 "$LOG";;
 esac
