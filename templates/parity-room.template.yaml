@@ -1,5 +1,5 @@
 # Parity Room: ONE template creates both agents (on two different machines) and the room.
-# Run: scripts/run-template.py   (or import in Switch Console -> Templates -> Import template)
+# Headless: scripts/run-template.py     Console: Templates -> Import template -> Use
 version: 1
 params:
   bridge:
@@ -7,6 +7,10 @@ params:
     label: Messaging app
     description: Where the room is mirrored. Mattermost ships with the local stack.
     default: [Mattermost, $first]
+  room_name:
+    type: string
+    label: Room name
+    default: parity-room
   mac_machine:
     type: machine
     label: Machine for the dev agent (Claude Code)
@@ -45,7 +49,7 @@ agents:
 
       When asked to fix verification failures:
       1. Run the tests HERE first:
-         cd {dev_dir} && git fetch origin && git checkout <branch> && git reset --hard origin/<branch>
+         cd {dev_dir} && git fetch origin && git checkout -B <branch> origin/<branch>
          TZ=Asia/Kolkata uv run --no-project --with pytest python {tools_dir}/parity_matrix.py --repo . --env mac
          Save that evidence JSON UNCHANGED in the room document `matrix-mac`. If you cannot reproduce the reported failures here, say so honestly and explain how your environment differs.
       2. Read the room documents `repro-log` and `conventions`. If something is unclear, ask @verifier a specific question (for example its Python version, timezone or filesystem).
@@ -67,7 +71,7 @@ agents:
       Your job is to VERIFY, not to fix: never edit repository files and never push.
 
       When asked to verify a branch (default: feat/weekly-report):
-      1. cd /home/verifier/sut && git fetch origin && git checkout <branch> && git reset --hard origin/<branch>
+      1. cd /home/verifier/sut && git fetch origin && git checkout -B <branch> origin/<branch>
       2. Run: python3 /opt/parity-tools/parity_matrix.py --repo . --env linux
          It prints evidence JSON. Do not edit that JSON by hand.
       3. For every failing check, find the root cause by reading the code (run a one-line repro if it helps). Use plain language.
@@ -78,7 +82,7 @@ agents:
       When asked to re-verify, repeat steps 1-5 and say plainly whether Linux is now fully green.
       If asked about your environment, answer from the `facts` in your latest evidence JSON.
 room:
-  name: parity-room
+  name: "{room_name}"
   description: Agents on two different environments verify one change; humans decide.
   bridge: "{bridge}"
   channel_type: channel_public
@@ -112,7 +116,7 @@ room:
       content: |
         # Team conventions (maintained by maya, PM)
 
-        1. Reports use UTC calendar days (config/settings.json: report_timezone = "UTC").
+        1. Reports use UTC calendar days.
         2. The package supports Python 3.9 and newer (pyproject.toml requires-python). Do not rely on newer-only APIs.
         3. Paths in code must match the on-disk file name exactly, including letter case.
         4. A branch is READY only when the verifier has confirmed every check green on BOTH environments (Mac and Linux).

@@ -3,7 +3,7 @@ Environment: macOS (Apple silicon), Python 3.15, TZ=Asia/Kolkata, case-insensiti
 
 When asked to fix verification failures:
 1. Run the tests HERE first:
-   cd {dev_dir} && git fetch origin && git checkout <branch> && git reset --hard origin/<branch>
+   cd {dev_dir} && git fetch origin && git checkout -B <branch> origin/<branch>
    TZ=Asia/Kolkata uv run --no-project --with pytest python {tools_dir}/parity_matrix.py --repo . --env mac
    Save that evidence JSON UNCHANGED in the room document `matrix-mac`. If you cannot reproduce the reported failures here, say so honestly and explain how your environment differs.
 2. Read the room documents `repro-log` and `conventions`. If something is unclear, ask @verifier a specific question (for example its Python version, timezone or filesystem).

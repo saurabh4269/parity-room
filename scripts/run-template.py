@@ -18,7 +18,7 @@ def main():
     inputs = {
         "mac_machine": "mac-host", "linux_machine": "linux-box",
         "dev_dir": os.path.join(ROOT, "work", "dev"), "tools_dir": os.path.join(ROOT, "tools"),
-        "human_pm": "maya", "human_qa": "sam",
+        "human_pm": "maya", "human_qa": "sam", "room_name": os.environ.get("PARITY_ROOM", "parity-room"),
     }
     if dry:
         print("dry run ok; inputs:", inputs); return

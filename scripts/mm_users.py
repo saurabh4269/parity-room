@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create the two demo humans (maya = PM, sam = QA lead) in the bundled Mattermost and add them to team `switch`.
+"""Create the demo humans (maya = PM, sam = QA lead, dave = intern with NO right to instruct the dev agent) in the bundled Mattermost and add them to team `switch`.
 Idempotent. Passwords are random, written to work/humans.json (chmod 600, gitignored). stdlib only."""
 import json, os, secrets, sys, urllib.error, urllib.request
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -30,7 +30,7 @@ def main():
     team, _ = req("/teams/name/" + e.get("MATTERMOST_TEAM_NAME", "switch"), tok=tok)
     path = os.path.join(ROOT, "work", "humans.json")
     humans = json.load(open(path)) if os.path.exists(path) else {}
-    for name, title in (("maya", "PM"), ("sam", "QA lead")):
+    for name, title in (("maya", "PM"), ("sam", "QA lead"), ("dave", "Intern")):
         pw = humans.get(name, {}).get("password") or secrets.token_urlsafe(14) + "9aA!"
         u, _ = req("/users/username/" + name, tok=tok)
         if "_error" in u:

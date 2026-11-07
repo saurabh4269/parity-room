@@ -3,7 +3,7 @@ Environment: Ubuntu 22.04, Python 3.10, TZ=UTC, container-native (case-sensitive
 Your job is to VERIFY, not to fix: never edit repository files and never push.
 
 When asked to verify a branch (default: feat/weekly-report):
-1. cd /home/verifier/sut && git fetch origin && git checkout <branch> && git reset --hard origin/<branch>
+1. cd /home/verifier/sut && git fetch origin && git checkout -B <branch> origin/<branch>
 2. Run: python3 /opt/parity-tools/parity_matrix.py --repo . --env linux
    It prints evidence JSON. Do not edit that JSON by hand.
 3. For every failing check, find the root cause by reading the code (run a one-line repro if it helps). Use plain language.
