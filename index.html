@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parity Room: when "it works on my machine" becomes a team problem</title>
+<meta name="description" content="A Claude Code agent on a Mac and a Codex agent on Linux verify one change together in a Switch room, and a human approves. Watch a real run, then run it yourself.">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Parity Room: it works on my machine. Does it work on yours?">
+<meta property="og:description" content="Two coding agents, two environments, one Switch room. The Linux agent finds three bugs the Mac can't see; the Mac agent fixes them; a human approves.">
+<meta property="og:image" content="https://saurabh4269.github.io/parity-room/assets/og.png">
+<meta property="og:url" content="https://saurabh4269.github.io/parity-room/">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className+=" js"</script>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hero" id="top">
+  <div class="pane pane--mac" aria-hidden="true"></div>
+  <div class="pane pane--linux" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="#top"><svg viewBox="0 0 22 22" aria-hidden="true"><rect width="22" height="22" rx="4" fill="#fff" stroke="#12161D" stroke-width="1.5"/><path d="M11 1.5h7.5a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H11z" fill="#0A1114"/></svg>Parity Room</a>
+    <ul class="nav__links">
+      <li><a href="#bugs">Three bugs</a></li>
+      <li><a href="#replay">Watch a real run</a></li>
+      <li><a href="#switch">What Switch does</a></li>
+      <li><a href="#limits">Limits</a></li>
+      <li><a href="#run">Run it</a></li>
+      <li><a href="https://github.com/saurabh4269/parity-room">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero__body" id="main">
+    <h1 class="title">
+      <span class="vh">It works on my machine.</span>
+      <span class="title__ink" aria-hidden="true">It works on my machine.</span>
+      <span class="title__pale" aria-hidden="true">It works on my machine.</span>
+    </h1>
+    <p class="lede">A Claude Code agent on a Mac and a Codex agent on Linux verify one change together in a Switch room. A human approves.</p>
+    <div class="cta">
+      <a class="btn btn--solid" href="#replay" data-play>Watch a real run</a>
+      <a class="btn btn--line" href="#run">Run it yourself</a>
+    </div>
+  </div>
+
+  <div class="hero__terms">
+    <div class="half half--mac">
+      <div class="term term--mac" aria-hidden="true">
+        <div class="term__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="term__title">This Mac</span></div>
+        <pre data-type><span class="ln ln--cmd" data-cmd>make evidence</span><span class="ln mute">[mac] macOS 27.2 arm64 | Python 3.15.2 | TZ Asia/Kolkata | filesystem case-insensitive | feat/weekly-report@53ee28b</span><span class="ln"><span class="ok">result: 3/3 checks pass</span></span><span class="ln"><span class="pf pass">PASS</span> Settings file loads</span><span class="ln"><span class="pf pass">PASS</span> UTC timestamp helper</span><span class="ln"><span class="pf pass">PASS</span> Day bucketing</span></pre>
+      </div>
+    </div>
+    <div class="half half--linux">
+      <div class="term term--linux" aria-hidden="true">
+        <div class="term__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="term__title">Linux container</span></div>
+        <pre data-type><span class="ln ln--cmd" data-cmd>make evidence</span><span class="ln mute">[linux] Ubuntu 22.04.5 LTS aarch64 | Python 3.10.12 | TZ UTC | filesystem case-sensitive | feat/weekly-report@53ee28b</span><span class="ln"><span class="bad">result: 0/3 checks pass</span></span><span class="ln"><span class="pf fail">FAIL</span> Settings file loads FileNotFoundError: [Errno 2] No such file or directory: '/tmp/sut/config/Settings.json'</span><span class="ln"><span class="pf fail">FAIL</span> UTC timestamp helper AttributeError: module 'datetime' has no attribute 'UTC'</span><span class="ln"><span class="pf fail">FAIL</span> Day bucketing AssertionError: assert {'2024-11-01': 4} == {'2024-11-01'...024-11-02': 2}</span></pre>
+      </div>
+    </div>
+    <p class="vh">The same code, run for real. On the Mac, 3 of 3 checks pass. On Ubuntu 22.04 with Python 3.10 in UTC, 0 of 3 pass: a file name's letter case, a Python 3.11 API and a timezone assumption.</p>
+  </div>
+
+  <div class="facts" aria-label="The two environments">
+    <div class="half half--mac"><b>Mac</b><span>macOS arm64</span><span>Python 3.15.2</span><span>TZ Asia/Kolkata</span><span>Filesystem ignores letter case</span></div>
+    <div class="half half--linux"><span>Filesystem keeps letter case</span><span>TZ UTC</span><span>Python 3.10.12</span><span>Ubuntu 22.04 arm64</span><b>Linux</b></div>
+  </div>
+
+  <button class="seam" type="button" role="slider" aria-label="Move the divider between the Mac and the Linux machine" aria-orientation="horizontal" aria-valuemin="40" aria-valuemax="62" aria-valuenow="50" aria-valuetext="50 percent">
+    <span class="seam__grip" aria-hidden="true">&#8596;</span>
+    <span class="seam__tip" aria-hidden="true">Drag</span>
+  </button>
+</header>
+
+<main>
+<section id="bugs" aria-labelledby="bugs-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2 id="bugs-h">Three bugs, one cause</h2>
+      <p>None of these is a logic error. Each one is something the code quietly assumed about the machine it was written on. Pick a machine.</p>
+    </div>
+    <div class="toggle-row">
+      <div class="seg" role="radiogroup" aria-label="Run the same code on">
+        <button type="button" role="radio" aria-checked="false" data-m="mac">On the Mac</button>
+        <button type="button" role="radio" aria-checked="true" data-m="linux">On Linux</button>
+      </div>
+      <small>Same commit, same tests. These are the seeded bugs in <a href="https://github.com/saurabh4269/parity-room/tree/main/sut/feature">sut/feature</a>.</small>
+    </div>
+    <table class="tbl" id="bugtbl">
+      <thead><tr><th scope="col" style="width:42%">What the code assumes</th><th scope="col">What happens here</th></tr></thead>
+      <tbody>
+        <tr data-row="case">
+          <td><h3>A file name's letter case</h3><code class="codebox">open(ROOT / "config" / "Settings.json")</code><p>The file on disk is <code>config/settings.json</code>.</p></td>
+          <td data-cell></td>
+        </tr>
+        <tr data-row="api">
+          <td><h3>A newer Python API</h3><code class="codebox">datetime.datetime.now(datetime.UTC)</code><p><code>datetime.UTC</code> arrived in Python 3.11. The project says it supports 3.9 and newer.</p></td>
+          <td data-cell></td>
+        </tr>
+        <tr data-row="tz">
+          <td><h3>A timezone</h3><code class="codebox">datetime.fromtimestamp(ev["ts"]).date()</code><p>The test expects two events on Nov 1 and two on Nov 2, a value captured on a machine set to IST.</p></td>
+          <td data-cell></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note-after">The third one isn't a crash, it's a disagreement: which side is wrong? In the run below, the answer comes from a document that exists only in the room. <button class="linkbtn" type="button" data-seek="156.2">Show me that moment</button>.</p>
+  </div>
+</section>
+
+
+<div class="replay-wrap" id="replay-wrap">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2 id="replay-h">Watch a real run</h2>
+      <p>An export of one real run in Mattermost. Every agent message and Switch notice is verbatim. The humans' lines were posted by script. Request to ready-for-approval took <b>2m49s</b>.</p>
+    </div>
+
+    <div class="replay" id="replay" role="group" aria-labelledby="replay-h">
+      <div class="replay__top"><span><b id="r-room">parity-room</b> in Mattermost, replayed</span><span id="r-meta"></span></div>
+      <div class="replay__grid">
+        <div class="chat" id="chat" role="log" aria-live="off" aria-label="Chat messages, newest at the bottom" tabindex="0"></div>
+        <aside class="side" aria-label="Room state">
+          <div>
+            <h3>Verification</h3>
+            <div class="status"><strong id="r-status" class="st-pending">Pending</strong><span class="sha" id="r-sha"></span></div>
+          </div>
+          <div>
+            <table class="mx" aria-label="Pass or fail per machine and check">
+              <thead><tr><th></th><th>Settings</th><th>Timestamp</th><th>Day bucketing</th></tr></thead>
+              <tbody id="mx"></tbody>
+            </table>
+          </div>
+          <div>
+            <h3>Roles</h3>
+            <div class="badges" id="roles"></div>
+          </div>
+          <div>
+            <h3>Room documents</h3>
+            <ul class="docs" id="docs"></ul>
+          </div>
+        </aside>
+      </div>
+      <div class="xport">
+        <button class="xbtn" id="x-play" type="button">Play</button>
+        <div class="speed" role="radiogroup" aria-label="Playback speed">
+          <button type="button" role="radio" aria-checked="false" data-s="1">1×</button>
+          <button type="button" role="radio" aria-checked="true" data-s="4">4×</button>
+          <button type="button" role="radio" aria-checked="false" data-s="8">8×</button>
+        </div>
+        <div class="scrub"><input id="x-scrub" type="range" min="0" max="100" step="0.1" value="0" aria-label="Position in the run"><div class="ticks" id="ticks" aria-hidden="true"></div></div>
+        <span class="clock" id="x-clock">0:00 / 0:00</span>
+        <div class="chapters" id="chapters" role="group" aria-label="Jump to a moment"></div>
+      </div>
+      <div class="replay__foot"><span>With the player focused: space plays or pauses, arrow keys step five seconds, [ and ] jump between moments.</span><span>Data: <a href="data/replay.json">replay.json</a></span></div>
+    </div>
+
+    <details class="tx" id="tx"><summary>Read the transcript as text</summary><ol id="tx-list"></ol></details>
+
+    <div class="shots">
+      <figure><img src="assets/shots/mattermost-1.jpg" width="1470" height="676" loading="lazy" alt="Mattermost channel: maya asks the verifier to check the branch while the Codex agent works"><figcaption>The request, and the Linux agent at work, in the actual Mattermost channel.</figcaption></figure>
+      <figure><img src="assets/shots/mattermost-2.jpg" width="1470" height="676" loading="lazy" alt="Mattermost channel: Linux is green, the Mac agent asks sam for approval"><figcaption>Both green. The Mac agent asks sam before it merges anything.</figcaption></figure>
+      <figure><img src="assets/shots/mattermost-3.jpg" width="1470" height="676" loading="lazy" alt="Mattermost channel: Switch refuses an instruction from dave, who is not on the agent's allow-list"><figcaption>Switch itself refuses the intern. The agent never sees his message.</figcaption></figure>
+    </div>
+  </div>
+</div>
+
+<section id="switch" aria-labelledby="sw-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2 id="sw-h">What Switch does here</h2>
+      <p>Take Switch away and what's left is two test scripts. Each row says where to see the feature in the replay.</p>
+    </div>
+    <table class="tbl map">
+      <thead><tr><th scope="col">Switch feature</th><th scope="col">What it does here</th><th scope="col">Without it</th><th scope="col"><span class="vh">Replay</span></th></tr></thead>
+      <tbody>
+        <tr><td><h3>One template</h3></td><td>A single file creates both agents on their named machines and the room, with its roles, a document and the kickoff.</td><td>Wiring two machines, two vendors and a chat room by hand.</td><td><button class="showme" type="button" data-seek="0">Show me</button></td></tr>
+        <tr><td><h3>Agents on machines</h3></td><td>The Mac and the Linux container are enrolled machines. Each agent is pinned to one by name and reports the environment it runs in.</td><td>The Linux-only failures are invisible from the Mac.</td><td><button class="showme" type="button" data-seek="8.4">Show me</button></td></tr>
+        <tr><td><h3>Roles</h3></td><td>People say <code>@verifier</code> or <code>@implementer</code>. <code>implementer</code> is exclusive, so one agent pushes at a time. Agents hand work to each other by role.</td><td>Hard-coded names, and two agents able to push over each other.</td><td><button class="showme" type="button" data-seek="100.3">Show me</button></td></tr>
+        <tr><td><h3>Room documents</h3></td><td>A human-written conventions document the agents can read but not edit settles which side is wrong. Each agent writes its own evidence.</td><td>The context lives in one agent's prompt, or nowhere.</td><td><button class="showme" type="button" data-seek="156.2">Show me</button></td></tr>
+        <tr><td><h3>Approval in the room</h3></td><td>The Mac agent asks <code>@sam</code> and merges only after his reply, which is recorded by name.</td><td>A bot with merge rights and no gate.</td><td><button class="showme" type="button" data-seek="182.2">Show me</button></td></tr>
+        <tr><td><h3>Addressing policy</h3></td><td>Only maya, sam and the owner's agents may instruct the agent that can push. Anyone else is refused by Switch before the agent sees the message.</td><td>A prompt that says "please don't", which a clever message can talk around.</td><td><button class="showme" type="button" data-seek="199.2">Show me</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="limits" aria-labelledby="lim-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2 id="lim-h">What this is not</h2>
+      <p>Four things a careful reader should know before trusting the rest of the page.</p>
+    </div>
+    <ul class="honest">
+      <li><strong>The Linux "machine" is a container on the same Mac.</strong><p>It is a different environment (operating system, Python, timezone, filesystem), not different hardware. Any machine you can reach over SSH works the same way.</p></li>
+      <li><strong>The bugs are seeded.</strong><p>"Three of three caught" is true by construction. This is a demonstration of a workflow, not a benchmark of the agents.</p></li>
+      <li><strong>The Mac could have seen one of them.</strong><p>The timezone bug also fails on the Mac if you set <code>TZ=UTC</code>. The point is who notices, who decides which side is wrong, and where that decision is written down.</p></li>
+      <li><strong>The humans in the replay were scripted.</strong><p>The agents and Switch's notices are real. Only macOS on Apple silicon was tested, and the Switch Console GUI path was not.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section id="run" aria-labelledby="run-h" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2 id="run-h">Run it yourself</h2>
+      <p>Three levels, from twenty seconds to the whole room. Switch 0.31.0 is pinned and nothing needs an account beyond the agents you already use.</p>
+    </div>
+    <div class="runs">
+      <div class="run"><div><h3>See the bug</h3><p>Needs Docker and <code>uv</code>. No Switch.</p></div>
+        <div class="code"><button class="copy" type="button">Copy</button><pre><code>git clone https://github.com/saurabh4269/parity-room
+cd parity-room
+make evidence</code></pre></div></div>
+      <div class="run"><div><h3>Bring up the room</h3><p>Needs Claude Code and Codex signed in. One command builds the stack, enrolls both machines and creates the agents and the room.</p></div>
+        <div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="c"># once: copies your Codex login into a Docker volume (read the note first)</span>
+make codex-auth
+make demo</code></pre></div></div>
+      <div class="run"><div><h3>Check the outcome</h3><p>Drives a full run with scripted humans, then proves the merged <code>main</code> passes on both machines.</p></div>
+        <div class="code"><button class="copy" type="button">Copy</button><pre><code>python3 scripts/e2e.py</code></pre></div></div>
+    </div>
+    <p class="numbers">Five automated runs took <b>2m25s to 2m49s</b> from request to ready-for-approval; <code>main</code> was green on both machines every time. <a href="https://github.com/saurabh4269/parity-room#measured-runs">The table, including the runs that failed first, is in the README.</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <h3>Parity Room</h3>
+      <p>Built for the Flip the Switch hackathon by WeMakeDevs, DevTools Academy and Switch. MIT licensed.</p>
+      <p><a href="https://github.com/saurabh4269/parity-room">Source on GitHub</a>, <a href="https://github.com/sandbox-quantum/switch">Switch</a>.</p>
+    </div>
+    <div>
+      <h3>How this page was made</h3>
+      <p>Layout explored in Google Stitch and built by hand, with fonts Bricolage Grotesque and Martian Mono (SIL Open Font License), self-hosted. The replay is real data from <a href="data/replay.json">replay.json</a>.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/app.js" defer></script>
+</body>
+</html>
