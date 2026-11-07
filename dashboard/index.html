@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Parity Room: live environment parity matrix for one change across agent environments.">
+<title>Parity Room</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090D16'/%3E%3Crect x='6' y='6' width='9' height='9' rx='2' fill='%2310B981'/%3E%3Crect x='17' y='6' width='9' height='9' rx='2' fill='%2338BDF8'/%3E%3Crect x='6' y='17' width='9' height='9' rx='2' fill='%2338BDF8'/%3E%3Crect x='17' y='17' width='9' height='9' rx='2' fill='%2310B981'/%3E%3C/svg%3E">
+<!-- Optional webfonts. Loaded non-blocking; the UI is fully styled with system fallbacks without them. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap"></noscript>
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#matrix-panel">Skip to parity matrix</a>
+
+<header class="topbar" aria-label="Parity Room status bar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false">
+      <rect x="1.5" y="1.5" width="29" height="29" rx="5" fill="#0D121F" stroke="#334155"/>
+      <rect x="7" y="7" width="8" height="8" rx="1.5" fill="#10B981"/>
+      <rect x="17" y="7" width="8" height="8" rx="1.5" fill="#38BDF8"/>
+      <rect x="7" y="17" width="8" height="8" rx="1.5" fill="#38BDF8"/>
+      <rect x="17" y="17" width="8" height="8" rx="1.5" fill="#10B981"/>
+    </svg>
+    <span class="brand-name">Parity Room</span>
+  </div>
+  <div class="change" id="change" aria-label="Change under test"></div>
+  <div class="spacer"></div>
+  <div class="overall s-pending" id="overall" role="status" aria-live="polite"></div>
+  <div class="conn" id="conn" role="status" aria-live="polite"></div>
+</header>
+
+<div class="layout">
+  <main class="main" id="main">
+    <section class="panel" id="matrix-panel" aria-labelledby="matrix-title" tabindex="-1">
+      <div class="panel-head">
+        <h2 class="panel-title" id="matrix-title"><span id="matrix-title-icon" class="title-icon"></span>Environment parity matrix</h2>
+        <span class="panel-sub" id="matrix-sub"></span>
+        <div class="legend" id="legend" aria-label="Status legend"></div>
+      </div>
+      <div class="summary" id="matrix-summary" aria-label="Result summary"></div>
+      <div class="matrix-scroll" id="matrix-scroll" tabindex="0" role="region" aria-label="Environment parity matrix, scrollable">
+        <div class="matrix" id="matrix" role="table" aria-label="Checks by environment">
+          <p class="empty" id="matrix-empty">Waiting for state&hellip;</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="alert-slot" aria-label="Parity alert"></section>
+
+    <section class="panel" id="timeline-panel" aria-labelledby="timeline-title">
+      <div class="panel-head">
+        <h2 class="panel-title" id="timeline-title"><span id="timeline-title-icon" class="title-icon"></span>Activity timeline</h2>
+        <span class="panel-sub" id="timeline-sub"></span>
+      </div>
+      <ol class="timeline" id="timeline" aria-label="Room activity, oldest first">
+        <li class="empty">Waiting for state&hellip;</li>
+      </ol>
+    </section>
+  </main>
+
+  <aside class="rail" id="rail" aria-label="Switch room">
+    <section class="panel" aria-labelledby="room-title">
+      <div class="panel-head room-head">
+        <div class="room-id">
+          <span class="label-sm">Switch room</span>
+          <h2 class="room-name" id="room-title">&mdash;</h2>
+        </div>
+        <div id="room-link-slot"></div>
+      </div>
+      <div class="rail-body" id="rail-body">
+        <p class="empty">Waiting for state&hellip;</p>
+      </div>
+    </section>
+  </aside>
+</div>
+
+<footer class="foot" id="foot" aria-label="Data freshness"></footer>
+<noscript><p class="empty">Parity Room needs JavaScript to render the live state.</p></noscript>
+</body>
+</html>

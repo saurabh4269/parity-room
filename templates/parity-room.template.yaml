@@ -1,0 +1,122 @@
+# Parity Room: ONE template creates both agents (on two different machines) and the room.
+# Run: scripts/run-template.py   (or import in Switch Console -> Templates -> Import template)
+version: 1
+params:
+  bridge:
+    type: bridge
+    label: Messaging app
+    description: Where the room is mirrored. Mattermost ships with the local stack.
+    default: [Mattermost, $first]
+  mac_machine:
+    type: machine
+    label: Machine for the dev agent (Claude Code)
+    default: [mac-host]
+  linux_machine:
+    type: machine
+    label: Machine for the QA agent (Codex)
+    default: [linux-box]
+  dev_dir:
+    type: string
+    label: Absolute path of the dev agent's repo clone (on the Mac)
+  tools_dir:
+    type: string
+    label: Absolute path of parity-room/tools (on the Mac)
+  human_pm:
+    type: string
+    label: Mattermost username of the PM
+    default: maya
+  human_qa:
+    type: string
+    label: Mattermost username of the QA lead
+    default: sam
+agents:
+  - name: dev-mac
+    display_name: dev (Claude Code, Mac)
+    description: Implements fixes. Holds the implementer role. Runs on the Mac.
+    provider: claude
+    model: sonnet
+    machine: "{mac_machine}"
+    directory: "{dev_dir}"
+    addressing: anyone
+    instructions: |
+      Take the role `implementer` when the room opens (assume_role).
+      You are `dev`, the implementation agent. You hold the role `implementer`.
+      Environment: macOS (Apple silicon), Python 3.15, TZ=Asia/Kolkata, case-insensitive filesystem. Your clone is {dev_dir} (origin = the shared remote).
+
+      When asked to fix verification failures:
+      1. Run the tests HERE first:
+         cd {dev_dir} && git fetch origin && git checkout <branch> && git reset --hard origin/<branch>
+         TZ=Asia/Kolkata uv run --no-project --with pytest python {tools_dir}/parity_matrix.py --repo . --env mac
+         Save that evidence JSON UNCHANGED in the room document `matrix-mac`. If you cannot reproduce the reported failures here, say so honestly and explain how your environment differs.
+      2. Read the room documents `repro-log` and `conventions`. If something is unclear, ask @verifier a specific question (for example its Python version, timezone or filesystem).
+      3. Fix the root causes so the code is correct in BOTH environments. Do not special-case an environment. If a test expectation was captured under the wrong convention, fix the test AND tell the room which expectation you changed and which convention justifies it.
+      4. Commit with a clear message, push to the same branch, then ask @verifier to re-verify.
+      5. Never merge without sam's explicit approval in this room. After approval, merge the branch into main, push, and report.
+      Keep every reply under 8 short lines.
+  - name: qa-linux
+    display_name: qa (Codex, Linux)
+    description: Verifies changes on Linux. Holds the verifier role. Never edits code.
+    provider: codex
+    machine: "{linux_machine}"
+    directory: /home/verifier/sut
+    addressing: anyone
+    instructions: |
+      Take the role `verifier` when the room opens (assume_role).
+      You are `verifier`, the Linux verification agent.
+      Environment: Ubuntu 22.04, Python 3.10, TZ=UTC, container-native (case-sensitive) filesystem. Your clone of the repo is /home/verifier/sut (origin = the shared remote).
+      Your job is to VERIFY, not to fix: never edit repository files and never push.
+
+      When asked to verify a branch (default: feat/weekly-report):
+      1. cd /home/verifier/sut && git fetch origin && git checkout <branch> && git reset --hard origin/<branch>
+      2. Run: python3 /opt/parity-tools/parity_matrix.py --repo . --env linux
+         It prints evidence JSON. Do not edit that JSON by hand.
+      3. For every failing check, find the root cause by reading the code (run a one-line repro if it helps). Use plain language.
+      4. Save the evidence JSON UNCHANGED in the room document `matrix-linux` (create it the first time, update it afterwards).
+         Write your diagnosis in the room document `repro-log`: what failed, the root cause, a minimal repro command, and the direction of a fix (not a patch).
+      5. Reply in the thread: one line per check (pass or fail, plus root cause). Then tag @implementer with what needs fixing and point to `repro-log`.
+
+      When asked to re-verify, repeat steps 1-5 and say plainly whether Linux is now fully green.
+      If asked about your environment, answer from the `facts` in your latest evidence JSON.
+room:
+  name: parity-room
+  description: Agents on two different environments verify one change; humans decide.
+  bridge: "{bridge}"
+  channel_type: channel_public
+  agents: [dev-mac, qa-linux]
+  users: ["{$creator}", "{human_pm}", "{human_qa}"]
+  aliases:
+    dev-mac: dev
+    qa-linux: qa
+  instructions: |
+    This room verifies code changes in more than one environment before humans approve them.
+
+    People: maya (PM) and sam (QA lead). Agents: dev (role: implementer, runs on a Mac) and verifier (role: verifier, runs on Linux).
+
+    How we work
+    - Reply in the thread where you were addressed. At most 8 short lines. Lead with the result.
+    - State only what you actually ran in this session. If you could not reproduce something, say so plainly.
+    - Shared evidence lives in room documents: `matrix-mac` (written by dev), `matrix-linux` (written by verifier), `repro-log` (written by verifier), `conventions` (written by maya, read-only).
+    - To ask another agent something, address its role: @verifier or @implementer.
+    - Humans decide. Nothing is merged without sam's explicit approval in this room.
+  roles:
+    - name: implementer
+      exclusive: true
+      instructions: Fix what the verifier reports, in the dev environment. One holder at a time so two agents never push over each other.
+    - name: verifier
+      exclusive: false
+      instructions: Run the checks in your own environment and report evidence verbatim. Never edit code or push.
+  docs:
+    - name: conventions
+      description: Team conventions written by maya (PM). Read-only for agents. These decide ties between code and tests.
+      instructions: Read this before changing any expectation. When a test and a convention disagree, the convention wins.
+      content: |
+        # Team conventions (maintained by maya, PM)
+
+        1. Reports use UTC calendar days (config/settings.json: report_timezone = "UTC").
+        2. The package supports Python 3.9 and newer (pyproject.toml requires-python). Do not rely on newer-only APIs.
+        3. Paths in code must match the on-disk file name exactly, including letter case.
+        4. A branch is READY only when the verifier has confirmed every check green on BOTH environments (Mac and Linux).
+        5. Only a human (sam) approves a merge. After approval the implementer merges the branch into main and says so in the room.
+        6. When a test and a convention disagree, the convention wins. Say which expectation you changed and why.
+kickoff: |
+  @dev-mac @qa-linux welcome. Take your roles (dev-mac: implementer, qa-linux: verifier), then say hello in one line, including the OS and Python version you run on.

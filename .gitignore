@@ -1,0 +1,14 @@
+# runtime state and secrets: never commit
+work/
+secrets/
+stack/
+verifier/vendor/
+*.env
+.env
+*.bak
+# tooling noise
+__pycache__/
+.pytest_cache/
+.venv/
+node_modules/
+.DS_Store

@@ -1,0 +1,9 @@
+[project]
+name = "weekly-report"
+version = "0.1.0"
+description = "Tiny team activity report (demo system-under-test for Parity Room)"
+requires-python = ">=3.9"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
