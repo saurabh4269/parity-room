@@ -7,6 +7,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"; NAME=parity-linux-box
 case "${1:-up}" in
   up)
+    "$ROOT/scripts/seed-remote.sh" "$ROOT/work/remote.git"   # the container bind-mounts this and clones it on start
     [ -f "$ROOT/verifier/vendor/switch-agent-controller-0.31.0.tgz" ] || "$ROOT/scripts/build-controller.sh"
     docker build -q -t parity-verifier:dev "$ROOT/verifier" >/dev/null
     docker rm -f "$NAME" >/dev/null 2>&1 || true

@@ -3,7 +3,7 @@
 #   scripts/seed-remote.sh <bare-repo-dir>      (created if missing; refreshed IN PLACE otherwise)
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"; BARE="${1:?usage: seed-remote.sh <bare-repo-dir>}"
-[ -d "$BARE" ] || git init -q --bare -b main "$BARE"
+[ -f "$BARE/HEAD" ] || { mkdir -p "$BARE"; git init -q --bare -b main "$BARE"; }   # Docker may have pre-created an empty dir for a bind mount
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 cd "$tmp"; git init -q -b main
 git config user.name "Priya (PR author)"; git config user.email "priya@example.com"

@@ -7,7 +7,6 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"; W="$ROOT/work"
 mkdir -p "$W"
-[ -d "$W/remote.git" ] || git init -q --bare -b main "$W/remote.git"
 "$ROOT/scripts/seed-remote.sh" "$W/remote.git"
 # Mac agent's clone
 rm -rf "${W:?}/dev"; git clone -q "$W/remote.git" "$W/dev"
