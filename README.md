@@ -6,11 +6,17 @@ A **Claude Code** agent on the author's Mac and a **Codex** agent on a Linux box
 
 > Built for the **Flip the Switch hackathon** (WeMakeDevs × DevTools Academy × Switch), Nov 4-7 2026. Track 1: Best Business Workflow.
 
+### For judges: the 5-minute path
+1. **See the problem in 20 s, no Switch needed:** `make evidence` (Docker + `uv`): 3/3 on the Mac, 0/3 on Ubuntu, three different errors.
+2. **See where Switch is used:** the [coverage map](#why-this-needs-switch-the-switch-coverage-map) below, then [`templates/parity-room.template.yaml`](templates/parity-room.template.yaml) (one file creates both agents on their machines *and* the room).
+3. **See it run for real:** [`docs/demo-transcript.md`](docs/demo-transcript.md) is an exported real channel with timings; or `make demo` then `python3 scripts/e2e.py`.
+4. **Check the claims:** [what is real and what is not](#what-is-real-and-what-is-not), and [measured runs](#measured-runs). `make demo` was also run from a **fully wiped state** (no containers, volumes, enrolled machines, built controller or ignored files) and then the whole workflow passed.
+
 | | |
 |---|---|
 | **Demo video** | _(link added at submission)_ |
 | **Dashboard** | `make dashboard` → http://localhost:8090 (live Env Matrix fed from the room) |
-| **Run it** | `make demo` (about 5-8 min the first time) |
+| **Run it** | `make demo` (1-2 min with cached images; 5-8 min the first time) |
 | **No Switch? Just see the bug** | `make evidence` (Docker + uv only, ~20 s) |
 
 | Mid-run: Linux has found the bugs, the Mac hasn't reported yet | After the fix: both environments verified |

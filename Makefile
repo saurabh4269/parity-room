@@ -1,9 +1,11 @@
 # Parity Room: reproduce the whole thing locally.  Needs: Docker (OrbStack/Docker Desktop), Node >= 24 + pnpm >= 10.28,
 # uv, git, Claude Code and Codex signed in on this machine.   `make demo` then open http://localhost:8065 (Mattermost).
 COMPOSE = docker compose -f stack/standalone-docker-compose.yml -f stack-overrides/mattermost.yml --profile collab --profile gateway --project-directory stack
-.PHONY: help demo stack machines codex-auth room policy dashboard evidence reset down clean-secrets
+
+.PHONY: up help demo stack machines codex-auth room policy dashboard evidence reset down clean-secrets
 help:
-	@echo "make demo       # stack + machines + seeded repo + agents + room (about 5-8 min the first time)"
+	@echo "make demo       # stack + machines + seeded repo + agents + room (about 1-2 min with cached images, 5-8 min the first time)"
+	@echo "make up         # (re)start the server and both machines, e.g. after a reboot; does not touch the room"
 	@echo "make stack      # Switch 0.31.0 + Mattermost in Docker, demo humans (maya, sam, dave)"
 	@echo "make codex-auth  # (once) copy your Codex login into a Docker volume for the Linux box; see README before running"
 	@echo "make machines   # enroll the Mac and the Linux container as Switch machines"
@@ -13,6 +15,7 @@ help:
 	@echo "make evidence   # no Switch needed: run the 3 checks on the Mac and in the Linux container, side by side"
 	@echo "make reset      # clean slate for another take: fresh room, clean repo, access policy re-applied (keeps server + machines)"
 	@echo "make down       # stop everything (keeps volumes)"
+up: stack machines   ## (re)start the server and both machines; safe to repeat; does not touch the room
 demo: stack machines room
 	@echo; echo "Open http://localhost:8065 (team 'switch', channel parity-room), then say as maya:"; echo '  @verifier please verify branch feat/weekly-report on your side and tell us what you find.'
 stack:
