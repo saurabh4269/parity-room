@@ -16,15 +16,16 @@ A **Claude Code** agent on the author's Mac and a **Codex** agent on a Linux box
 | | |
 |---|---|
 | **Demo video** | https://vimeo.com/1244695983 (2:14, real recorded run, speed-ups labelled) |
-| **Dashboard** | `make dashboard` → http://localhost:8090 (live Env Matrix fed from the room) |
+| **Switch's own UI** | The Gateway at http://localhost:3000: machines, agents, roles and room documents, as Switch itself shows them (the demo video uses it) |
+| **Optional extra** | `make dashboard` → http://localhost:8090, a small standalone matrix view (not used in the video) |
 | **Run it** | `make demo` (1-2 min with cached images; 5-8 min the first time) |
 | **No Switch? Just see the bug** | `make evidence` (Docker + uv only, ~20 s) |
 
-| Mid-run: Linux has found the bugs, the Mac hasn't reported yet | After the fix: both environments verified |
-|---|---|
-| ![](docs/img/dashboard-failing.png) | ![](docs/img/dashboard-verified.png) |
+| Machines: both online, both agents running | Room: roles and who holds them | Room documents, and who wrote each |
+|---|---|---|
+| ![](docs/img/gateway-machines.png) | ![](docs/img/gateway-room-roles.png) | ![](docs/img/gateway-room-documents.png) |
 
-*The live Env Matrix reads the room (documents, roles, agent status) and the channel. Both captures are real, taken from a clean-room run.*
+*Switch's own Gateway UI, captured after a real run (room `parity-room-9`). `mac-host` is the Mac, `linux-box` is a Linux container on it. `implementer` is exclusive and held by `dev-mac`; `verifier` is held by `qa-linux`. The four documents are the room's shared memory: `conventions` was written by a person (read-only for the agents), `matrix-mac` by `dev-mac`, `matrix-linux` and `repro-log` by `qa-linux`.*
 
 | The request, the Linux agent at work | Green on both, and sam's approval | Switch refuses dave |
 |---|---|---|
@@ -82,9 +83,10 @@ flowchart LR
   ctlB <-->|WebSocket| core
   dev -->|push| repo[(shared git remote)]
   qa -->|fetch| repo
-  obs[observer :8090] -->|room docs, roles, status| core
+  obs[optional observer :8090] -->|room docs, roles, status| core
   obs -->|timeline| mm
-  obs --> dash[Env Matrix dashboard]
+  obs --> dash[optional standalone matrix view]
+  gw[Switch Gateway UI :3000] --- core
 ```
 
 ## Run it
@@ -101,7 +103,7 @@ make evidence      # same 3 checks on the Mac and in an Ubuntu 22.04 / Python 3.
 make codex-auth    # once: copies your Codex login into a Docker volume for the Linux box (read the caveat in the script)
 make demo          # Switch 0.31.0 + Mattermost, both machines, both agents, the room
 make policy        # lock dev-mac down so Switch refuses dave (make reset does this for you)
-make dashboard     # http://localhost:8090
+make dashboard     # optional extra, http://localhost:8090 (Switch's own UI is the Gateway at http://localhost:3000)
 # open http://localhost:8065 (team "switch", channel parity-room), sign in as maya (credentials: work/humans.json), then:
 #   @verifier please verify branch feat/weekly-report on your side and tell us what you find.
 make reset         # clean slate for another take
@@ -118,8 +120,9 @@ Prefer the Switch Console GUI? Import `templates/parity-room.template.yaml` (Tem
 | The two agents' owner | The same Switch user, so Switch's cross-owner trust isn't exercised here |
 | The 3 bugs | **Seeded on purpose** (the verified part is that they are genuinely environment-dependent). "3 of 3 caught" is by construction: this is a demonstration, not a benchmark |
 | One bug also reproduces on the Mac with `TZ=UTC` | True. The point isn't that the Mac *can't* see it; it's who notices, who decides which side is wrong, and where that decision is recorded |
-| Scripted humans (`scripts/humans.py`) | Used for rehearsals, the recorded transcript and the demo video. Labelled `[SCRIPTED]` in the transcript and stated on screen in the video |
-| Dashboard | Reads **live** from the room (documents, roles, status) and Mattermost; nothing is hard-coded except labels |
+| Humans in the recorded runs | Never real teammates. Scripted accounts (`scripts/humans.py`) for rehearsals and the replay, labelled `[SCRIPTED]`. In the newer demo video, maya and dave are typed by Claude Code driving this Mac's real mouse and keyboard, and sam is a second AI agent deciding on its own. Both are stated on screen |
+| Switch Gateway UI | Switch's own web UI. It shows what is really in the room (roles, participants, documents) and which machines are online. Nothing in it is mine |
+| Optional dashboard (`dashboard/`) | A small standalone matrix view that reads the same data live; kept as an extra, not used in the newer video |
 
 ## Honest limits
 - Verified on macOS arm64 only. On a Linux dev host the case-sensitivity bug will not hide (use `make evidence` to see the other two).
@@ -146,6 +149,6 @@ What it took to get there, honestly: runs before these **failed twice for reason
 See [`docs/feedback.md`](docs/feedback.md).
 
 ## Layout
-`templates/` the Switch template · `room/` the prose of instructions, conventions and agent briefs · `tools/parity_matrix.py` deterministic evidence tool · `sut/` the system under test (baseline + the PR with seeded bugs) · `verifier/` the Linux machine image · `scripts/` headless orchestration · `observer/` + `dashboard/` the live Env Matrix (layout explored in Google Stitch, `dashboard/design/`; built and styled by hand) · `stack/` is fetched, not committed.
+`templates/` the Switch template · `room/` the prose of instructions, conventions and agent briefs · `tools/parity_matrix.py` deterministic evidence tool · `sut/` the system under test (baseline + the PR with seeded bugs) · `verifier/` the Linux machine image · `scripts/` headless orchestration · `observer/` + `dashboard/` an optional standalone Env Matrix (layout explored in Google Stitch, `dashboard/design/`; built and styled by hand; the demo uses Switch's own Gateway UI instead) · `stack/` is fetched, not committed.
 
 MIT licensed. Switch itself is Apache-2.0 with the Commons Clause and is not vendored here.
