@@ -2,7 +2,7 @@
 # uv, git, Claude Code and Codex signed in on this machine.   `make demo` then open http://localhost:8065 (Mattermost).
 COMPOSE = docker compose -f stack/standalone-docker-compose.yml -f stack-overrides/mattermost.yml --profile collab --profile gateway --project-directory stack
 
-.PHONY: up help demo stack machines codex-auth room policy dashboard evidence reset down clean-secrets
+.PHONY: up help demo stack machines codex-auth room policy evidence reset down clean-secrets
 help:
 	@echo "make demo       # stack + machines + seeded repo + agents + room (about 1-2 min with cached images, 5-8 min the first time)"
 	@echo "make up         # (re)start the server and both machines, e.g. after a reboot; does not touch the room"
@@ -11,13 +11,12 @@ help:
 	@echo "make machines   # enroll the Mac and the Linux container as Switch machines"
 	@echo "make room       # seed the git repo and create both agents + the room from ONE template"
 	@echo "make policy     # lock dev-mac down: only maya, sam and its owner may instruct it"
-	@echo "make dashboard  # live Env Matrix on http://localhost:8090"
 	@echo "make evidence   # no Switch needed: run the 3 checks on the Mac and in the Linux container, side by side"
 	@echo "make reset      # clean slate for another take: fresh room, clean repo, access policy re-applied (keeps server + machines)"
 	@echo "make down       # stop everything (keeps volumes)"
 up: stack machines   ## (re)start the server and both machines; safe to repeat; does not touch the room
 demo: stack machines room
-	@echo; echo "Open http://localhost:8065 (team 'switch', channel parity-room), then say as maya:"; echo '  @verifier please verify branch feat/weekly-report on your side and tell us what you find.'
+	@echo; echo "Switch's own UI:  Gateway http://localhost:3000 (machines, agents, rooms)   Chat http://localhost:8065 (team 'switch', channel parity-room)"; echo "Sign in as maya (password in work/humans.json) and say:"; echo '  @verifier please verify branch feat/weekly-report on your side and tell us what you find.'; echo "Step by step, with what to look at in each UI: docs/replicate.md"
 stack:
 	scripts/fetch-stack.sh
 	scripts/gen-env.sh
@@ -39,8 +38,6 @@ room:
 	python3 scripts/run-template.py
 policy:
 	python3 scripts/policy.py apply
-dashboard:
-	python3 observer/server.py --port 8090
 evidence:
 	scripts/evidence.sh
 reset:

@@ -11,5 +11,8 @@ The submission asks for "a real chat with your teammates", so use a real person 
 ## B. You alone, two browser profiles
 Sign in as `maya` in one profile and `sam` in another. It is the same person, so say so (the form's "teammates" wording), or label the lines `[SCRIPTED]` as in `docs/demo-transcript.md`.
 
-## C. Scripted humans (rehearsal only)
-`scripts/humans.py maya "@verifier please verify branch feat/weekly-report"` posts through the Mattermost API exactly like a typed message. Never script a human as `admin`: the Switch bridge drops admin posts.
+## C. Scripted humans (rehearsal and the automated runs only)
+`scripts/humans.py maya "@verifier please verify branch feat/weekly-report"` posts through the Mattermost API exactly like a typed message. Never script a human as `admin`: the Switch bridge drops admin posts. `scripts/e2e.py` uses this, so its runs have no real humans.
+
+## D. A second AI agent as the teammate (what the demo film does)
+In the film, `sam` is an AI agent: a Claude subagent with its own Chrome window signed in as sam. It reads the channel through a small local controller and types in the real composer, and it approves only if the evidence in the room supports it. maya and dave are typed by Claude Code through this Mac's real mouse and keyboard. None of them is a real teammate, and the film says so on screen. Scripts and the brief: [`demo/`](../demo/README.md).

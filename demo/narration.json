@@ -1,0 +1,72 @@
+{
+ "voice_id": "niLTODfB1j2nXIbp3M14",
+ "voice_name": "Pranab - Indian Natural",
+ "model": "eleven_v3",
+ "output_format": "mp3_44100_128",
+ "settings": {
+  "stability": 0.5,
+  "similarity_boost": 0.8,
+  "style": 0.0,
+  "use_speaker_boost": true,
+  "speed": 1.0
+ },
+ "seed": 7,
+ "joiner": "newline",
+ "lines": [
+  [
+   "w01",
+   "It works on my machine. You know the line. So I ran the same two commands here, on my Mac, and in a Linux container. The Mac makes one file. Linux makes two. Same code, different result.",
+   0.7
+  ],
+  [
+   "w02",
+   "I built Parity Room to catch this. Two AI coding agents check one change, each on its own computer. Claude Code works on my Mac. Codex works in the container. A platform called Switch puts them in one chat room.",
+   0.7
+  ],
+  [
+   "w03",
+   "Each agent has a job here. The implementer fixes code, and only one agent can hold that job. The verifier only checks, and reports.",
+   0.7
+  ],
+  [
+   "w04",
+   "Now I play Maya, the product manager. Quick note: Claude Code types for her, with my real mouse and keyboard. She names a job, not a computer. Verifier, please check this branch.",
+   0.7
+  ],
+  [
+   "w05",
+   "The Linux agent starts. Click Show activity, and you see each command it runs. This takes about a minute, so I speed it up.",
+   0.7
+  ],
+  [
+   "w06",
+   "Three checks fail. A file name has the wrong letter case. A Python feature is missing in older Python. A date depends on the time zone. My Mac can't see any of these.",
+   0.7
+  ],
+  [
+   "w07",
+   "The agent saves its findings in the room, as documents. Watch the room page in Switch. After a reload, the evidence is there.",
+   0.7
+  ],
+  [
+   "w08",
+   "The Mac agent reads those documents and the team rules. It fixes all three bugs, and pushes. Here is the new commit.",
+   0.7
+  ],
+  [
+   "w09",
+   "Linux checks again, and both computers pass. Before the merge, the agent asks Sam, the QA lead, for approval. Sam is a second AI agent, in its own browser. It reads the evidence, and decides alone.",
+   0.7
+  ],
+  [
+   "w10",
+   "Sam says yes, and the code merges. Then Dave, an intern, orders a push straight to main. Switch refuses. The agent never sees the message.",
+   0.7
+  ],
+  [
+   "w11",
+   "The room now keeps the rules, and the proof from both computers. What is real: the agents, the room, the checks. What is not: I planted the bugs, the Linux computer is a container, and this voice is AI. That's Parity Room.",
+   0
+  ]
+ ]
+}

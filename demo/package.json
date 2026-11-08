@@ -1,0 +1,9 @@
+{
+  "name": "parity-room-demo",
+  "private": true,
+  "type": "module",
+  "description": "Scripts that recorded the demo film (macOS only). See README.md.",
+  "dependencies": {
+    "puppeteer-core": "25.16.0"
+  }
+}

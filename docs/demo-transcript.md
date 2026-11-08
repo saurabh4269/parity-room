@@ -1,6 +1,6 @@
 # Demo transcript (real run, exported 2026-11-07 20:35 local time)
 
-Channel `parity-room-7` on a local Switch 0.31.0 + Mattermost. Agents: `dev-mac` (Claude Code · Sonnet · Mac) and `qa-linux` (Codex · Linux container). Human lines are **[SCRIPTED]** (posted through the Mattermost API for rehearsal).
+Channel `parity-room-7` on a local Switch 0.31.0 + Mattermost. Agents: `dev-mac` (Claude Code · Sonnet · Mac) and `qa-linux` (Codex · Linux container). Human lines are **[SCRIPTED]** (posted through the Mattermost API for rehearsal). This is an automated acceptance run, not the demo film. The film is a different, screen-recorded run: see [`demo/`](../demo/README.md) and [`docs/replicate.md`](replicate.md).
 
 ## Key timings
 

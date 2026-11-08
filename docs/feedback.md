@@ -19,7 +19,7 @@ Each item says how I know it: **observed** (I hit it while running this repo), o
 6. **Template docs vs reality.** Roles can't be assigned to agents in a template (agents must `assume_role`, so it has to be in their instructions); there's no template key for reasoning `effort` (it lives in `advanced_config`); in v2 a `references` list whose entries all have `value:` collapses and the run fails; and the docs say `red-blue-workroom.template.yaml` documents every field but it contains no roles, documents or aliases. _(read)_
 7. **Default addressing mismatch.** `docs/TEMPLATES.md` says a template agent's default addressing is `owner`; the server applies owner + the owner's agents. _(read)_
 8. **Why was a command declined?** Codex's auto-reviewer declined a `git reset --hard origin/<branch>` ("⊘ 1 declined") and the agent worked around it, which cost ~30 s on the first run. A short reason on the card would help; I switched the instruction to the non-destructive `git checkout -B`. _(observed)_
-9. **A room's documents are invisible from the chat app.** The docs say so, and it's why I built a small dashboard that reads them through the gateway. Showing "📄 updated room document X" (already there) with a link/preview would help. _(observed)_
+9. **A room's documents are invisible from the chat app.** The docs say so. They are visible on the Gateway's room page, which is what the demo film shows, but nothing in the chat links to it. Showing "📄 updated room document X" (already there) with a link or a preview would help. _(observed)_
 
 ## Event-side (not the product)
 - The hackathon page says the agent protocol is "server-sent events in, HTTP out"; the docs say WebSocket (SSE deprecated).

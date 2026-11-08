@@ -21,7 +21,7 @@ import time
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 
-# check id -> (human title, pytest test name). Keep in sync with dashboard/fixtures.
+# check id -> (human title, pytest test name).
 CHECKS = [
     ("settings", "Settings file loads", "test_load_settings"),
     ("stamp", "UTC timestamp helper", "test_stamp_is_utc_iso"),
