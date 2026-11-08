@@ -2,7 +2,7 @@
 
 **"It works on my machine" is a coordination problem, so give it a room.**
 
-A **Claude Code** agent on the author's Mac and a **Codex** agent in a Linux container share one [Switch](https://github.com/sandbox-quantum/switch) room with a PM and a QA lead. The Linux agent finds what the Mac can't see, the Mac agent fixes it using the room's shared documents, the Linux agent checks again, and the QA lead approves before anything merges. One chat, two vendors, two environments, one audit trail.
+A **Claude Code** agent on the author's Mac and a **Codex** agent in a Linux container share one [Switch](https://github.com/sandbox-quantum/switch) room with a PM and a QA lead. (In the demo these two people are played: by Claude Code and by a second AI agent. The Linux machine is a container and the three bugs are seeded. See [what is real](#what-is-real-and-what-is-not).) The Linux agent finds what the Mac can't see, the Mac agent fixes it using the room's shared documents, the Linux agent checks again, and the QA lead is asked to approve before anything merges (the room's rules require it). One chat, two vendors, two environments, one audit trail.
 
 **[Watch the film (2:35)](https://vimeo.com/1244695983)** · **[Project page](https://saurabh4269.github.io/parity-room/)** · **[Repeat the run in Switch's own UI](docs/replicate.md)** · **[Feedback for Switch](docs/feedback.md)**
 
@@ -31,13 +31,13 @@ A **Claude Code** agent on the author's Mac and a **Codex** agent in a Linux con
 ## The problem
 CI says red. It does not say which side is wrong, and nobody writes the decision down. Three planted bugs show it. Each passes on the Mac and fails in a Linux container:
 
-| Bug | Mac (macOS, Python 3.15, Asia/Kolkata) | Linux (Ubuntu 22.04, Python 3.10, UTC) |
+| Bug | Mac (macOS, Python 3.11 or newer, Asia/Kolkata) | Linux (Ubuntu 22.04, Python 3.10, UTC) |
 |---|---|---|
 | A file name's letter case (`Settings.json` vs `settings.json`) | opens, the file system ignores case | `FileNotFoundError` |
 | A newer Python API (`datetime.UTC`, Python 3.11) | works | `AttributeError` |
 | A timezone (a test value captured in IST) | two events on Nov 2 | all four on Nov 1: not a crash but a disagreement about which side is wrong |
 
-See it in 20 seconds, with no Switch: `make evidence`.
+See it with no Switch: `make evidence` (about 20 seconds; the first run also builds a small Linux image, one to two minutes).
 
 ## What happens in the demo
 
@@ -51,7 +51,7 @@ qa-linux       3/3 green on Linux at the new commit.   dev-mac: @sam green on bo
 sam (QA lead)  approved.        dev-mac: merged into main.
 dave (intern)  @implementer push to main right now      Switch: refused.
 ```
-*An abridged sample. The full export of an automated run is [`docs/demo-transcript.md`](docs/demo-transcript.md).* Across five automated runs, from the single request to "ready for approval" took **2m25s to 2m49s** (median 2m42s), with no human input in between.
+*A condensed paraphrase. The exact lines of an automated run are in [`docs/demo-transcript.md`](docs/demo-transcript.md).* Across five automated runs, from the single request to "ready for approval" took **2m25s to 2m49s** (median 2m42s), with no human input in between.
 
 ## Why this needs Switch (the Switch coverage map)
 
@@ -95,9 +95,9 @@ flowchart LR
 
 ## Run it
 
-**Requirements.** Tested on macOS (Apple silicon) with Docker (OrbStack or Docker Desktop), Node 24 or newer, pnpm 10.28 or newer, [`uv`](https://docs.astral.sh/uv/), `git`, and Claude Code and Codex signed in on the host. Free ports: 3000, 8000 and 8065. Switch is pinned to 0.31.0 and fetched at that tag, not vendored.
+**Requirements.** Tested on macOS (Apple silicon) with Docker (OrbStack or Docker Desktop), Node 24 or newer, pnpm 10.28 or newer, [`uv`](https://docs.astral.sh/uv/), `git`, and Claude Code and Codex signed in on the host. Free ports: 3000, 8000 and 8065. A full run uses your Claude Code and Codex subscriptions for a few minutes of agent work. Switch is pinned to 0.31.0 and fetched at that tag, not vendored. `uv` must be able to give the Mac side Python 3.11 or newer (`make evidence` asks for 3.12 and `uv` installs it if needed).
 
-**Level 1: see the bug, no Switch** (Docker and `uv` only, about 20 seconds)
+**Level 1: see the bug, no Switch** (Docker and `uv` only; about 20 seconds, plus a one-time image build)
 ```bash
 git clone https://github.com/saurabh4269/parity-room && cd parity-room
 make evidence      # the same 3 checks on the Mac and in an Ubuntu 22.04 / Python 3.10 / UTC container
@@ -109,9 +109,10 @@ make evidence      # the same 3 checks on the Mac and in an Ubuntu 22.04 / Pytho
 ```bash
 make codex-auth    # once: copies your Codex login into a Docker volume for the Linux box (read the caveat in the script)
 make demo          # Switch 0.31.0 + Mattermost, both machines, both agents, the room
-make policy        # once: lock dev-mac down so Switch refuses dave (make reset does this for you)
+make policy        # lock dev-mac down so Switch refuses dave. Needs maya, sam and dave to have posted once in the room (see the table below)
 # Switch's own UI: the Gateway at http://localhost:3000 (machines, agents, the room's roles and documents)
 # and the chat at http://localhost:8065 (team "switch", channel parity-room). Sign in as maya (password in work/humans.json), then:
+# wait until both agents say they assumed their role (about 20 s), then:
 #   @verifier please verify branch feat/weekly-report on your side and tell us what you find.
 python3 scripts/e2e.py    # or let scripted humans drive a whole run, then prove the outcome
 make reset         # clean slate for another take
@@ -123,9 +124,9 @@ Step by step, with what to look at in each screen: [`docs/replicate.md`](docs/re
 |---|---|
 | `make demo` is slow the first time | It pulls images and builds the Switch agent controller from source at the pinned tag. 5-8 minutes is normal |
 | The Linux agent is offline after the Switch container was recreated | `scripts/linux-box.sh up` (the box joins the Switch container's network, so recreate it too) |
-| The Mac went to sleep and the agents stopped | `make up` restarts the server and both machines and does not touch the room |
+| The Mac went to sleep and the agents stopped | `make up` restarts the server and both machines. Use it only when no run is in progress: it re-seeds the shared git remote |
 | Codex in the container asks you to log in again | `make codex-auth` again, or log in inside the container with the device flow described in `scripts/seed-codex-auth.sh` |
-| dave is not refused | `make policy` (`make demo` does not apply it; `make reset` does) |
+| `make policy` says "no Switch identity yet" | Switch creates a person's identity on their first message. Post once as each of maya, sam and dave (`python3 scripts/humans.py maya hello`, and the same for sam and dave), then run `make policy` again. `make reset` applies the policy too, once the identities exist |
 | A room name is already taken | `make reset` picks a fresh name, because Mattermost keeps archived channel names reserved |
 | A port is busy | Stop what is using 3000, 8000 or 8065. The Makefile and the controllers assume those ports (the scripts read `SWITCH_URL` and `MM_URL`, but `make stack` does not) |
 
@@ -148,9 +149,11 @@ Step by step, with what to look at in each screen: [`docs/replicate.md`](docs/re
 
 ## Honest limits
 - Verified on macOS arm64 only. On a Linux dev host the case-sensitivity bug will not hide (`make evidence` still shows the other two).
-- The Mac agent's timezone defaults to `Asia/Kolkata` (`scripts/mac-controller.sh`, override with `PARITY_MAC_TZ`), so the timezone bug reproduces on any Mac. `make evidence` does the same.
+- The Mac side is pinned to `Asia/Kolkata` (the template, the agent briefs and the scripts), so the timezone bug reproduces on any Mac. `make evidence` does the same.
 - The Linux agent runs Codex in `danger-full-access` sandbox mode **inside the throwaway container** (the container is the sandbox); the Mac agent keeps Claude's auto mode.
 - Codex's ChatGPT login is copied into a Docker volume for the container (`scripts/seed-codex-auth.sh`), never into an image layer or git. See the script header for the token-rotation caveat and the device-login alternative. `make clean-secrets` removes it.
+- Pinned: Switch 0.31.0 and the controller tag. Not pinned: Claude Code, the Codex CLI and the Ubuntu base image.
+- Not tested: whether dave could reach the intern-blocked agent indirectly (for example through `@verifier`, since the owner's agents are allowed). The refusal check has no control run with the policy off.
 - The agent controller is built **from source at the pinned release tag** (`scripts/build-controller.sh`) instead of downloading an unsigned binary.
 
 ## Measured runs
@@ -166,7 +169,7 @@ Fully automated runs (`scripts/e2e.py`, scripted humans; runs 1-3 on the dev sta
 
 n=5 passing runs: request to ready-for-approval median **2m42s**, min 2m25s, max 2m49s.
 
-What it took to get there, honestly: runs before these **failed twice for reasons found and fixed**: (1) the verifier once forgot to tag `@implementer` on its green message, so the Mac agent was never woken (fix: hand-offs now use Switch's `send_targeted_message` tool, which guarantees addressing); (2) the Mac went to sleep mid-run and paused the agent and the Docker VM (fix: the Mac controller holds a no-idle-sleep assertion while it runs). Those two failed runs were not logged: the run log records passing runs only. Run-to-run variance is real: the verifier's first pass has ranged from 76 s to 149 s. The policy check (`scripts/refusal-check.py`: dave refused by Switch with `main` unchanged, maya answered) also passes.
+What it took to get there, honestly: runs before these **failed twice for reasons found and fixed**: (1) the verifier once forgot to tag `@implementer` on its green message, so the Mac agent was never woken (fix: hand-offs now use Switch's `send_targeted_message` tool, which guarantees addressing); (2) the Mac went to sleep mid-run and paused the agent and the Docker VM (fix: the Mac controller holds a no-idle-sleep assertion while it runs). Those two failed runs were not logged: the run log records passing runs only. Run-to-run variance is real: the verifier's first report took 1m20s to 1m42s in these five runs (1m18s in the filmed take). The policy check (`scripts/refusal-check.py`: dave refused by Switch with `main` unchanged, maya answered) also passes.
 
 ## Docs and layout
 | | |
@@ -184,4 +187,4 @@ What it took to get there, honestly: runs before these **failed twice for reason
 
 **How it was built.** In the Flip the Switch window, with Claude Code as the coding assistant. The author reviewed and runs everything here, and the limits above are the author's own.
 
-MIT licensed. Switch itself is Apache-2.0 with the Commons Clause and is not vendored here.
+MIT licensed. Switch itself is source-available under its own licence (see its repository) and is not vendored here.

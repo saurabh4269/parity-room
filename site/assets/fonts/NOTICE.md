@@ -1,6 +1,6 @@
 # Font licences
 
-These two typefaces are redistributed here, unmodified, as subsetted WOFF2 files.
+These two typefaces are redistributed here as Latin-subset WOFF2 files.
 
 | File | Typeface | Licence |
 |---|---|---|

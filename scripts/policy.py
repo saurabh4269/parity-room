@@ -15,7 +15,7 @@ def external_ids(names):
                          capture_output=True, text=True, check=True).stdout
     rows = dict(l.split("|") for l in out.strip().splitlines())
     missing = [n for n in names if n not in rows]
-    if missing: sys.exit(f"no Switch identity yet for {missing}: they must post once in the room first")
+    if missing: sys.exit(f"no Switch identity yet for {missing}: they must post once in the room first (for example: python3 scripts/humans.py maya hello, then the same for sam and dave), then run this again")
     return [rows[n] for n in names]
 
 def main():

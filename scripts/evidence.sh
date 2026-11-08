@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"; T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 "$ROOT/scripts/seed-remote.sh" "$T/remote.git"
 git clone -q "$T/remote.git" "$T/mac" && git -C "$T/mac" checkout -q feat/weekly-report
-echo "=== Mac"; (cd "$T/mac" && TZ="${PARITY_MAC_TZ:-Asia/Kolkata}" uv run --quiet --no-project --with pytest python "$ROOT/tools/parity_matrix.py" --repo . --env mac --text)
+echo "=== Mac"; (cd "$T/mac" && TZ="${PARITY_MAC_TZ:-Asia/Kolkata}" uv run --quiet --no-project --python 3.12 --with pytest python "$ROOT/tools/parity_matrix.py" --repo . --env mac --text)
 echo; echo "=== Linux container (Ubuntu 22.04, Python 3.10, UTC)"
 if ! docker image inspect parity-verifier:dev >/dev/null 2>&1; then
   docker build -q -t parity-verifier-lite - <<'DF' >/dev/null

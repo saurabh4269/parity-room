@@ -12,7 +12,7 @@ RUN set -eux; arch="$(dpkg --print-architecture)"; \
     curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${n}.tar.xz" | tar -xJ -C /usr/local --strip-components=1; \
     node --version
 RUN pip3 install --no-cache-dir pytest && npm install -g @openai/codex && codex --version
-# The Switch agent controller, built from source at the pinned release tag (see Makefile: controller-pkg).
+# The Switch agent controller, built from source at the pinned release tag (see scripts/build-controller.sh).
 # Installed with --ignore-scripts. Not downloaded as an unsigned binary.
 COPY vendor/switch-agent-controller-0.31.0.tgz /tmp/controller.tgz
 RUN npm install --global --ignore-scripts /tmp/controller.tgz && rm /tmp/controller.tgz \

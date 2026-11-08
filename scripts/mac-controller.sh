@@ -11,6 +11,7 @@ export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" TZ="${PARITY_MAC_TZ:-Asia
 mkdir -p "$ROOT/work/logs"
 case "${1:-status}" in
   start)
+    pgrep -f "controller-mac-data" >/dev/null && { echo "mac-host controller is already running"; exit 0; }
     [ -x "$BIN" ] || { echo "installing controller (ignore-scripts) into work/controller-mac"; npm install --prefix "$PREFIX" --ignore-scripts --no-audit --no-fund "$PKG" >/dev/null; }
     if [ ! -f "$DATA/controller.db" ]; then
       CODE="$(python3 "$ROOT/scripts/gw.py" enroll-code)"

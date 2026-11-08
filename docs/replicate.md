@@ -13,7 +13,7 @@ You need Docker, Node 24 or newer, pnpm 10.28 or newer, `uv`, `git`, and Claude 
 ```bash
 make codex-auth     # once: copies your Codex login into a Docker volume for the Linux box (read the caveat in the script)
 make demo           # Switch + Mattermost, both machines, both agents, the room
-make policy         # once: lets Switch refuse dave (make reset does this for you)
+make policy         # lets Switch refuse dave. It needs maya, sam and dave to have posted once in the room (Switch creates a person's identity on their first message)
 ```
 
 `make demo` ends by printing where Switch's own UI is. You need two browser tabs:
@@ -32,7 +32,7 @@ Each row is a scene of the film. "Real time" is measured from the request in the
 | 1 | Terminal, repo root | `uname -a; python3 --version; date +%Z`, then `touch A a` in an empty folder and count the files. Run the same inside `docker exec parity-linux-box bash -lc '...'`. (`make evidence` runs the three checks on both sides.) | The Mac keeps one file, Linux keeps two. Different Python, different timezone | seconds |
 | 2 | Gateway, **Machines** (`/machines`) | Look | `mac-host` and `linux-box` are online. Managed agents `dev-mac` (Claude Code) and `qa-linux` (Codex) are running | |
 | 3 | Gateway, **Rooms**, open the room (`/rooms/<id>`) | Look, scroll down | `implementer` is exclusive and held by `dev-mac`. `verifier` is held by `qa-linux`. Documents: only `conventions` so far | |
-| 4 | Chat, as `maya` | Type: `@verifier please verify branch feat/weekly-report on your side and tell us what you find.` | A progress card from `qa-linux` appears | request at 0 s |
+| 4 | Chat, as `maya` | First wait until both agents have said they assumed their role (about 20 seconds after `make demo` or `make reset`). A request sent earlier gets Switch's warning that no agent holds the `verifier` role, and nobody answers. Then type: `@verifier please verify branch feat/weekly-report on your side and tell us what you find.` | A progress card from `qa-linux` appears | request at 0 s |
 | 5 | Chat | Click **Show activity** on the verifier's card | The real commands the Linux agent runs, as it runs them | |
 | 6 | Chat | Wait | The verifier reports `0/3` on Linux and tags `@implementer` | +78 s |
 | 7 | Gateway room page | Reload, scroll to **Documents** | `matrix-linux` and `repro-log` are new. Each shows the agent that wrote it | |
@@ -44,7 +44,7 @@ Each row is a scene of the film. "Real time" is measured from the request in the
 
 In the film, steps 4 and 11 are typed by Claude Code through this Mac's real mouse and keyboard, and step 10 is a second AI agent. Nobody scripted the agents' answers. See [what is real](../README.md#what-is-real-and-what-is-not).
 
-Run-to-run time varies. Across five automated runs, "ready for approval" took 2m25s to 2m49s (see [Measured runs](../README.md#measured-runs)). The first verifier pass alone ranged from 76 s to 149 s.
+Run-to-run time varies. Across five automated runs, "ready for approval" took 2m25s to 2m49s (see [Measured runs](../README.md#measured-runs)). The verifier's first report took 1m20s to 1m42s in the five logged runs.
 
 ## 3. Check it without watching
 

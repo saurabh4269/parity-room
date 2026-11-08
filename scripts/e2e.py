@@ -31,6 +31,9 @@ def step(label, ts0, ts):
     print(f"  {label:<34} +{(ts - ts0) / 1000:5.0f}s", flush=True)
 
 print(f"e2e on #{ROOM} (scripted humans)")
+# Both agents must hold their role before the request: a message sent earlier gets "no agent currently holds the verifier role"
+wait("dev-mac", r"assumed the .?implementer", 0, 240); wait("qa-linux", r"assumed the .?verifier", 0, 240)
+print("  both agents hold their roles", flush=True)
 t_req = int(time.time() * 1000)
 humans.say("maya", "@verifier please verify branch feat/weekly-report on your side and tell us what you find.")
 red, msg = wait("qa-linux", r"red|0/3|fail", t_req);                      step("verifier reports red", t_req, red)

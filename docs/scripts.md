@@ -15,7 +15,7 @@ Everything is plain bash or Python 3 standard library (the evidence tool needs o
 | `make up` | Restart the server and both machines after a reboot. Does not touch the room |
 | `make reset` | Clean slate for another run: a fresh room, a clean repo, the policy applied. Keeps the server and the machines |
 | `make down` | Stop everything and keep the volumes |
-| `make clean-secrets` | Remove the Codex login volume, the controller data volume and `work/humans.json` |
+| `make clean-secrets` | Remove the Codex login volume, the controller data volume and `work/humans.json`. `stack/.env` and `work/controller-mac-data` stay |
 
 ## Scripts (`scripts/`)
 | Script | What it does |
@@ -28,7 +28,7 @@ Everything is plain bash or Python 3 standard library (the evidence tool needs o
 | `mac-controller.sh` | Run the headless agent controller for the Mac (`start`, `stop`, `status`, `logs`). Defaults the Mac agent's timezone to `Asia/Kolkata` (`PARITY_MAC_TZ` overrides it) and holds a no-idle-sleep assertion |
 | `linux-box.sh` | The second environment: Ubuntu 22.04, Python 3.10, UTC, case-sensitive, with the Codex CLI (`up`, `down`, `logs`, `shell`). It joins the Switch container's network |
 | `seed-codex-auth.sh` | Copy the host's Codex login into a Docker volume. Read its header for the token-rotation caveat and the device-login alternative |
-| `seed-sut.sh`, `seed-remote.sh` | Build the shared bare git remote from `sut/`: a healthy `main` and the branch `feat/weekly-report` with three environment-dependent bugs. Refreshes in place |
+| `seed-sut.sh`, `seed-remote.sh` | Build the shared bare git remote from `sut/`: a healthy `main` and the branch `feat/weekly-report` with three environment-dependent bugs. Refreshes in place, and recreates the Mac agent's clone and the container's clone |
 | `mm_users.py` | Create the demo people (maya the PM, sam the QA lead, dave the intern) in Mattermost. Idempotent. Passwords are random and go to `work/humans.json` (gitignored) |
 | `gen-template.py` | Render `templates/parity-room.template.yaml` from the prose in `room/` |
 | `run-template.py` | Run the template against the Switch server: both agents on their machines and the room, in one call. Rolls back if the room fails (`--dry-run` lints only) |
