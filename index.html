@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Parity Room: it works on my machine. Does it work on yours?</title>
-<meta name="description" content="Two AI coding agents on two computers check one change together in one Switch room. Nothing merges without an approval. Watch the real run, then run it yourself.">
+<meta name="description" content="Two AI coding agents on two computers check one change together in one Switch room. The room's rules require an approval before anything merges. Watch the real run, then run it yourself.">
 <meta name="theme-color" content="#F6F2EA">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Parity Room: it works on my machine. Does it work on yours?">
@@ -41,7 +41,7 @@
   <div class="wrap">
     <p class="pill"><i></i>Flip the Switch hackathon · Track 1, Best Business Workflow</p>
     <h1 class="display" id="h1">It works on <span class="mark">my machine.</span></h1>
-    <p class="hero__sub">Two AI coding agents, on two computers, check one change together in one Switch room. Nothing merges without an approval.</p>
+    <p class="hero__sub">Two AI coding agents, on two computers, check one change together in one Switch room. The room's rules require an approval before anything merges.</p>
     <p class="diff"><span class="diff__side"><span class="diff__k">On the Mac</span><span class="chip chip--pass">3 of 3 pass</span></span><span class="diff__vs">vs</span><span class="diff__side"><span class="diff__k">On Linux</span><span class="chip chip--fail">0 of 3 pass</span></span><small>Same commit. Same tests.</small></p>
     <div class="cta">
       <a class="btn btn--solid" href="#film" data-play><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>Watch the 2:35 film</a>
@@ -238,7 +238,7 @@
       <article class="step">
         <div class="step__text">
           <p class="step__no"><b>5</b>Approve</p>
-          <h3>Nothing merges until someone says yes.</h3>
+          <h3>The room's rules say: no merge without a yes.</h3>
           <p class="body">Linux checks the new commit, and both machines pass 3 of 3. <code>dev-mac</code> asks <code>@sam</code> and waits. In the film sam is a second AI agent that reads the evidence and decides on its own. The gate itself is a rule in the room's instructions, which the agent follows. Switch records who replied, by name.</p>
           <dl class="facts">
             <div><dt>Switch feature</dt><dd><ul class="feat"><li>Real identities</li><li>Approval recorded by name</li></ul></dd></div>
@@ -310,7 +310,7 @@
           <li><span>Run 4</span><span class="trk"><i style="width:84.4%"></i></span><b>2m32s</b></li>
           <li><span>Run 5</span><span class="trk"><i style="width:93.9%"></i></span><b>2m49s</b></li>
         </ul>
-        <p class="small">Scale: 0 to 3 minutes. Run to run, the verifier's first pass alone ranged from 76 s to 149 s. <a href="https://github.com/saurabh4269/parity-room#measured-runs" style="color:#fff">The full table</a>.</p>
+        <p class="small">Scale: 0 to 3 minutes. In these five runs the verifier's first report took 1m20s to 1m42s. <a href="https://github.com/saurabh4269/parity-room#measured-runs" style="color:#fff">The full table</a>.</p>
       </div>
       <div class="panel">
         <h3>The two runs that failed first</h3>
@@ -346,7 +346,7 @@
           <li><b>The screen.</b> A real Chrome, a real Terminal and Switch's own dashboard, recorded with Cap. No page was restyled.</li>
           <li><b>The input.</b> The mouse and keyboard are driven at operating-system level, so the cursor you see is the real cursor.</li>
           <li><b>The result.</b> The merge commit exists, and the merged <code>main</code> passes 3 of 3 on the Mac and in the Linux container.</li>
-          <li><b>The numbers.</b> Five automated runs, each followed by outcome checks. Two earlier runs failed, and they are listed in the proof above.</li>
+          <li><b>The numbers.</b> Five automated runs, each followed by outcome checks. Two earlier runs failed, and the proof above says why. Only the passing runs were logged.</li>
         </ul>
       </section>
       <section class="col col--not" aria-labelledby="real-no">
