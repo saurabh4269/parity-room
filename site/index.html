@@ -3,16 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Parity Room: when "it works on my machine" becomes a team problem</title>
-<meta name="description" content="A Claude Code agent on a Mac and a Codex agent on Linux verify one change together in a Switch room, and a human approves. Watch a real run, then run it yourself.">
-<meta name="color-scheme" content="light">
+<title>Parity Room: it works on my machine. Does it work on yours?</title>
+<meta name="description" content="Two AI coding agents on two computers check one change together in one Switch room. Nothing merges without an approval. Watch the real run, then run it yourself.">
+<meta name="theme-color" content="#F6F2EA">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Parity Room: it works on my machine. Does it work on yours?">
-<meta property="og:description" content="Two coding agents, two environments, one Switch room. The Linux agent finds three bugs the Mac can't see; the Mac agent fixes them; a human approves.">
+<meta property="og:description" content="A Claude Code agent on a Mac and a Codex agent on Linux check one change in one Switch room. The Linux agent finds three bugs the Mac can't see, the Mac agent fixes them, and a person approves.">
 <meta property="og:image" content="https://saurabh4269.github.io/parity-room/assets/og.png">
 <meta property="og:url" content="https://saurabh4269.github.io/parity-room/">
 <meta name="twitter:card" content="summary_large_image">
-<script>document.documentElement.className+=" js"</script>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
@@ -20,215 +19,430 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="hero" id="top">
-  <div class="pane pane--mac" aria-hidden="true"></div>
-  <div class="pane pane--linux" aria-hidden="true"></div>
-
-  <nav class="nav" aria-label="Main">
-    <a class="brand" href="#top"><svg viewBox="0 0 22 22" aria-hidden="true"><rect width="22" height="22" rx="4" fill="#fff" stroke="#12161D" stroke-width="1.5"/><path d="M11 1.5h7.5a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H11z" fill="#0A1114"/></svg>Parity Room</a>
-    <ul class="nav__links">
-      <li><a href="#bugs">Three bugs</a></li>
-      <li><a href="#replay">Watch a real run</a></li>
-      <li><a href="#switch">What Switch does</a></li>
-      <li><a href="#limits">Limits</a></li>
-      <li><a href="#run">Run it</a></li>
-      <li><a href="https://github.com/saurabh4269/parity-room">GitHub</a></li>
-    </ul>
-  </nav>
-
-  <div class="hero__body" id="main">
-    <h1 class="title">
-      <span class="vh">It works on my machine.</span>
-      <span class="title__ink" aria-hidden="true">It works on my machine.</span>
-      <span class="title__pale" aria-hidden="true">It works on my machine.</span>
-    </h1>
-    <p class="lede">A Claude Code agent on a Mac and a Codex agent on Linux verify one change together in a Switch room. A human approves.</p>
-    <div class="cta">
-      <a class="btn btn--solid" href="#replay" data-play>Watch a real run</a>
-      <a class="btn btn--line" href="#run">Run it yourself</a>
-    </div>
+<header class="top" id="top">
+  <div class="wrap top__in">
+    <a class="brand" href="#top" aria-label="Parity Room, back to the top"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x=".75" y=".75" width="22.5" height="22.5" rx="5" fill="#FFFDF8" stroke="#0F1B2D" stroke-width="1.5"/><path d="M12 .75h6.25a5 5 0 0 1 5 5v12.5a5 5 0 0 1-5 5H12z" fill="#0F1B2D"/></svg>Parity Room</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#film">Film</a>
+      <a href="#how">How Switch is used</a>
+      <a href="#proof">Proof</a>
+      <a href="#real">What's real</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#run">Run it</a>
+    </nav>
+    <a class="btn btn--line" href="https://github.com/saurabh4269/parity-room">GitHub</a>
   </div>
-
-  <div class="hero__terms">
-    <div class="half half--mac">
-      <div class="term term--mac" aria-hidden="true">
-        <div class="term__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="term__title">This Mac</span></div>
-        <pre data-type><span class="ln ln--cmd" data-cmd>make evidence</span><span class="ln mute">[mac] macOS 27.2 arm64 | Python 3.15.2 | TZ Asia/Kolkata | filesystem case-insensitive | feat/weekly-report@53ee28b</span><span class="ln"><span class="ok">result: 3/3 checks pass</span></span><span class="ln"><span class="pf pass">PASS</span> Settings file loads</span><span class="ln"><span class="pf pass">PASS</span> UTC timestamp helper</span><span class="ln"><span class="pf pass">PASS</span> Day bucketing</span></pre>
-      </div>
-    </div>
-    <div class="half half--linux">
-      <div class="term term--linux" aria-hidden="true">
-        <div class="term__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="term__title">Linux container</span></div>
-        <pre data-type><span class="ln ln--cmd" data-cmd>make evidence</span><span class="ln mute">[linux] Ubuntu 22.04.5 LTS aarch64 | Python 3.10.12 | TZ UTC | filesystem case-sensitive | feat/weekly-report@53ee28b</span><span class="ln"><span class="bad">result: 0/3 checks pass</span></span><span class="ln"><span class="pf fail">FAIL</span> Settings file loads FileNotFoundError: [Errno 2] No such file or directory: '/tmp/sut/config/Settings.json'</span><span class="ln"><span class="pf fail">FAIL</span> UTC timestamp helper AttributeError: module 'datetime' has no attribute 'UTC'</span><span class="ln"><span class="pf fail">FAIL</span> Day bucketing AssertionError: assert {'2024-11-01': 4} == {'2024-11-01'...024-11-02': 2}</span></pre>
-      </div>
-    </div>
-    <p class="vh">The same code, run for real. On the Mac, 3 of 3 checks pass. On Ubuntu 22.04 with Python 3.10 in UTC, 0 of 3 pass: a file name's letter case, a Python 3.11 API and a timezone assumption.</p>
-  </div>
-
-  <div class="facts" aria-label="The two environments">
-    <div class="half half--mac"><b>Mac</b><span>macOS arm64</span><span>Python 3.15.2</span><span>TZ Asia/Kolkata</span><span>Filesystem ignores letter case</span></div>
-    <div class="half half--linux"><span>Filesystem keeps letter case</span><span>TZ UTC</span><span>Python 3.10.12</span><span>Ubuntu 22.04 arm64</span><b>Linux</b></div>
-  </div>
-
-  <button class="seam" type="button" role="slider" aria-label="Move the divider between the Mac and the Linux machine" aria-orientation="horizontal" aria-valuemin="40" aria-valuemax="62" aria-valuenow="50" aria-valuetext="50 percent">
-    <span class="seam__grip" aria-hidden="true">&#8596;</span>
-    <span class="seam__tip" aria-hidden="true">Drag</span>
-  </button>
 </header>
 
-<main>
-<section id="bugs" aria-labelledby="bugs-h">
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero" aria-labelledby="h1">
   <div class="wrap">
-    <div class="sec-h">
-      <h2 id="bugs-h">Three bugs, one cause</h2>
-      <p>None of these is a logic error. Each one is something the code quietly assumed about the machine it was written on. Pick a machine.</p>
-    </div>
-    <div class="toggle-row">
-      <div class="seg" role="radiogroup" aria-label="Run the same code on">
-        <button type="button" role="radio" aria-checked="false" data-m="mac">On the Mac</button>
-        <button type="button" role="radio" aria-checked="true" data-m="linux">On Linux</button>
-      </div>
-      <small>Same commit, same tests. These are the seeded bugs in <a href="https://github.com/saurabh4269/parity-room/tree/main/sut/feature">sut/feature</a>.</small>
-    </div>
-    <table class="tbl" id="bugtbl">
-      <thead><tr><th scope="col" style="width:42%">What the code assumes</th><th scope="col">What happens here</th></tr></thead>
-      <tbody>
-        <tr data-row="case">
-          <td><h3>A file name's letter case</h3><code class="codebox">open(ROOT / "config" / "Settings.json")</code><p>The file on disk is <code>config/settings.json</code>.</p></td>
-          <td data-cell></td>
-        </tr>
-        <tr data-row="api">
-          <td><h3>A newer Python API</h3><code class="codebox">datetime.datetime.now(datetime.UTC)</code><p><code>datetime.UTC</code> arrived in Python 3.11. The project says it supports 3.9 and newer.</p></td>
-          <td data-cell></td>
-        </tr>
-        <tr data-row="tz">
-          <td><h3>A timezone</h3><code class="codebox">datetime.fromtimestamp(ev["ts"]).date()</code><p>The test expects two events on Nov 1 and two on Nov 2, a value captured on a machine set to IST.</p></td>
-          <td data-cell></td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="note-after">The third one isn't a crash, it's a disagreement: which side is wrong? In the run below, the answer comes from a document that exists only in the room. <button class="linkbtn" type="button" data-seek="156.2">Show me that moment</button>.</p>
-  </div>
-</section>
-
-
-<div class="replay-wrap" id="replay-wrap">
-  <div class="wrap">
-    <div class="sec-h">
-      <h2 id="replay-h">Watch a real run</h2>
-      <p>An export of one real run in Mattermost. Every agent message and Switch notice is verbatim. The humans' lines were posted by script. Request to ready-for-approval took <b>2m49s</b>.</p>
+    <p class="pill"><i></i>Flip the Switch hackathon · Track 1, Best Business Workflow</p>
+    <h1 class="display" id="h1">It works on <span class="mark">my machine.</span></h1>
+    <p class="hero__sub">Two AI coding agents, on two computers, check one change together in one Switch room. Nothing merges without an approval.</p>
+    <p class="diff"><span class="diff__side"><span class="diff__k">On the Mac</span><span class="chip chip--pass">3 of 3 pass</span></span><span class="diff__vs">vs</span><span class="diff__side"><span class="diff__k">On Linux</span><span class="chip chip--fail">0 of 3 pass</span></span><small>Same commit. Same tests.</small></p>
+    <div class="cta">
+      <a class="btn btn--solid" href="#film" data-play><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>Watch the 2:35 film</a>
+      <a class="btn btn--line" href="#run">Run it yourself</a>
     </div>
 
-    <div class="replay" id="replay" role="group" aria-labelledby="replay-h">
-      <div class="replay__top"><span><b id="r-room">parity-room</b> in Mattermost, replayed</span><span id="r-meta"></span></div>
-      <div class="replay__grid">
-        <div class="chat" id="chat" role="log" aria-live="off" aria-label="Chat messages, newest at the bottom" tabindex="0"></div>
-        <aside class="side" aria-label="Room state">
-          <div>
-            <h3>Verification</h3>
-            <div class="status"><strong id="r-status" class="st-pending">Pending</strong><span class="sha" id="r-sha"></span></div>
-          </div>
-          <div>
-            <table class="mx" aria-label="Pass or fail per machine and check">
-              <thead><tr><th></th><th>Settings</th><th>Timestamp</th><th>Day bucketing</th></tr></thead>
-              <tbody id="mx"></tbody>
-            </table>
-          </div>
-          <div>
-            <h3>Roles</h3>
-            <div class="badges" id="roles"></div>
-          </div>
-          <div>
-            <h3>Room documents</h3>
-            <ul class="docs" id="docs"></ul>
-          </div>
-        </aside>
-      </div>
-      <div class="xport">
-        <button class="xbtn" id="x-play" type="button">Play</button>
-        <div class="speed" role="radiogroup" aria-label="Playback speed">
-          <button type="button" role="radio" aria-checked="false" data-s="1">1×</button>
-          <button type="button" role="radio" aria-checked="true" data-s="4">4×</button>
-          <button type="button" role="radio" aria-checked="false" data-s="8">8×</button>
-        </div>
-        <div class="scrub"><input id="x-scrub" type="range" min="0" max="100" step="0.1" value="0" aria-label="Position in the run"><div class="ticks" id="ticks" aria-hidden="true"></div></div>
-        <span class="clock" id="x-clock">0:00 / 0:00</span>
-        <div class="chapters" id="chapters" role="group" aria-label="Jump to a moment"></div>
-      </div>
-      <div class="replay__foot"><span>With the player focused: space plays or pauses, arrow keys step five seconds, [ and ] jump between moments.</span><span>Data: <a href="data/replay.json">replay.json</a></span></div>
+    <div class="stage" id="film" data-vimeo="1244695983">
+      <a class="stage__go" href="https://vimeo.com/1244695983" aria-label="Play the film, 2 minutes 35 seconds">
+        <img src="assets/img/machines.jpg" width="1500" height="844" alt="Switch's own Machines page: mac-host and linux-box are online, and each runs one agent, dev-mac and qa-linux.">
+        <span class="stage__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></span>
+        <span class="stage__len" aria-hidden="true">2:35</span>
+      </a>
     </div>
+    <p class="figcap"><b>FIG 1</b>Switch's own dashboard, the Gateway: both computers online, one agent on each. A frame of the film, which is a real run on a real screen. Vimeo loads only after you press play. <a href="https://vimeo.com/1244695983">Open it on Vimeo</a>.</p>
+    <div class="chapters" id="chapters" role="group" aria-label="Jump to a moment of the film">
+      <button type="button" data-seek="0"><span>0:00</span>The problem</button>
+      <button type="button" data-seek="13"><span>0:13</span>Two agents, one room</button>
+      <button type="button" data-seek="28"><span>0:28</span>Roles</button>
+      <button type="button" data-seek="37"><span>0:37</span>The request</button>
+      <button type="button" data-seek="50"><span>0:50</span>Show activity</button>
+      <button type="button" data-seek="65"><span>1:05</span>Three checks fail</button>
+      <button type="button" data-seek="77"><span>1:17</span>Evidence in the room</button>
+      <button type="button" data-seek="88"><span>1:28</span>The fix</button>
+      <button type="button" data-seek="98"><span>1:38</span>Approval</button>
+      <button type="button" data-seek="120"><span>2:00</span>Switch refuses</button>
+      <button type="button" data-seek="131"><span>2:11</span>What the room keeps</button>
+    </div>
+    <details class="tx"><summary>Read what the narrator says</summary>
+      <ol>
+        <li><strong>0:00 The problem.</strong> It works on my machine. You know the line. So I ran the same two commands here, on my Mac, and in a Linux container. The Mac makes one file. Linux makes two. Same code, different result.</li>
+        <li><strong>0:13 Two agents, one room.</strong> I built Parity Room to catch this. Two AI coding agents check one change, each on its own computer. Claude Code works on my Mac. Codex works in the container. A platform called Switch puts them in one chat room.</li>
+        <li><strong>0:28 Roles.</strong> Each agent has a job here. The implementer fixes code, and only one agent can hold that job. The verifier only checks, and reports.</li>
+        <li><strong>0:37 The request.</strong> Now I play Maya, the product manager. Quick note: Claude Code types for her, with my real mouse and keyboard. She names a job, not a computer. Verifier, please check this branch.</li>
+        <li><strong>0:50 Show activity.</strong> The Linux agent starts. Click Show activity, and you see each command it runs. This takes about a minute, so I speed it up.</li>
+        <li><strong>1:05 Three checks fail.</strong> Three checks fail. A file name has the wrong letter case. A Python feature is missing in older Python. A date depends on the time zone. My Mac can't see any of these.</li>
+        <li><strong>1:17 Evidence in the room.</strong> The agent saves its findings in the room, as documents. Watch the room page in Switch. After a reload, the evidence is there.</li>
+        <li><strong>1:28 The fix.</strong> The Mac agent reads those documents and the team rules. It fixes all three bugs, and pushes. Here is the new commit.</li>
+        <li><strong>1:38 Approval.</strong> Linux checks again, and both computers pass. Before the merge, the agent asks Sam, the QA lead, for approval. Sam is a second AI agent, in its own browser. It reads the evidence, and decides alone.</li>
+        <li><strong>2:00 Switch refuses.</strong> Sam says yes, and the code merges. Then Dave, an intern, orders a push straight to main. Switch refuses. The agent never sees the message.</li>
+        <li><strong>2:11 What the room keeps.</strong> The room now keeps the rules, and the proof from both computers. What is real: the agents, the room, the checks. What is not: I planted the bugs, the Linux computer is a container, and this voice is AI. That's Parity Room.</li>
+      </ol>
+    </details>
 
-    <details class="tx" id="tx"><summary>Read the transcript as text</summary><ol id="tx-list"></ol></details>
-
-    <div class="shots">
-      <figure><img src="assets/shots/mattermost-1.jpg" width="1470" height="676" loading="lazy" alt="Mattermost channel: maya asks the verifier to check the branch while the Codex agent works"><figcaption>The request, and the Linux agent at work, in the actual Mattermost channel.</figcaption></figure>
-      <figure><img src="assets/shots/mattermost-2.jpg" width="1470" height="676" loading="lazy" alt="Mattermost channel: Linux is green, the Mac agent asks sam for approval"><figcaption>Both green. The Mac agent asks sam before it merges anything.</figcaption></figure>
-      <figure><img src="assets/shots/mattermost-3.jpg" width="1470" height="676" loading="lazy" alt="Mattermost channel: Switch refuses an instruction from dave, who is not on the agent's allow-list"><figcaption>Switch itself refuses the intern. The agent never sees his message.</figcaption></figure>
-    </div>
-  </div>
-</div>
-
-<section id="switch" aria-labelledby="sw-h">
-  <div class="wrap">
-    <div class="sec-h">
-      <h2 id="sw-h">What Switch does here</h2>
-      <p>Take Switch away and what's left is two test scripts. Each row says where to see the feature in the replay.</p>
-    </div>
-    <table class="tbl map">
-      <thead><tr><th scope="col">Switch feature</th><th scope="col">What it does here</th><th scope="col">Without it</th><th scope="col"><span class="vh">Replay</span></th></tr></thead>
-      <tbody>
-        <tr><td><h3>One template</h3></td><td>A single file creates both agents on their named machines and the room, with its roles, a document and the kickoff.</td><td>Wiring two machines, two vendors and a chat room by hand.</td><td><button class="showme" type="button" data-seek="0">Show me</button></td></tr>
-        <tr><td><h3>Agents on machines</h3></td><td>The Mac and the Linux container are enrolled machines. Each agent is pinned to one by name and reports the environment it runs in.</td><td>The Linux-only failures are invisible from the Mac.</td><td><button class="showme" type="button" data-seek="8.4">Show me</button></td></tr>
-        <tr><td><h3>Roles</h3></td><td>People say <code>@verifier</code> or <code>@implementer</code>. <code>implementer</code> is exclusive, so one agent pushes at a time. Agents hand work to each other by role.</td><td>Hard-coded names, and two agents able to push over each other.</td><td><button class="showme" type="button" data-seek="100.3">Show me</button></td></tr>
-        <tr><td><h3>Room documents</h3></td><td>A human-written conventions document the agents can read but not edit settles which side is wrong. Each agent writes its own evidence.</td><td>The context lives in one agent's prompt, or nowhere.</td><td><button class="showme" type="button" data-seek="156.2">Show me</button></td></tr>
-        <tr><td><h3>Approval in the room</h3></td><td>The Mac agent asks <code>@sam</code> and merges only after his reply, which is recorded by name.</td><td>A bot with merge rights and no gate.</td><td><button class="showme" type="button" data-seek="182.2">Show me</button></td></tr>
-        <tr><td><h3>Addressing policy</h3></td><td>Only maya, sam and the owner's agents may instruct the agent that can push. Anyone else is refused by Switch before the agent sees the message.</td><td>A prompt that says "please don't", which a clever message can talk around.</td><td><button class="showme" type="button" data-seek="199.2">Show me</button></td></tr>
-      </tbody>
-    </table>
-    <div class="shots" style="margin-top:2rem">
-      <figure><img src="assets/shots/gateway-machines.jpg" width="1400" height="875" loading="lazy" alt="Switch's own Gateway UI, Machines page: mac-host and linux-box online, with dev-mac and qa-linux running"><figcaption>Switch's own UI: both machines online, both agents running.</figcaption></figure>
-      <figure><img src="assets/shots/gateway-room-roles.jpg" width="1400" height="875" loading="lazy" alt="Switch's own Gateway UI, room page: implementer is exclusive and held by dev-mac; verifier is held by qa-linux"><figcaption>The roles, and who holds them.</figcaption></figure>
-      <figure><img src="assets/shots/gateway-room-documents.jpg" width="1400" height="875" loading="lazy" alt="Switch's own Gateway UI, room page: the documents conventions, matrix-mac, matrix-linux and repro-log, with the agent that wrote each"><figcaption>The room's documents, and who wrote each one.</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section id="limits" aria-labelledby="lim-h" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-h">
-      <h2 id="lim-h">What this is not</h2>
-      <p>Four things a careful reader should know before trusting the rest of the page.</p>
-    </div>
-    <ul class="honest">
-      <li><strong>The Linux "machine" is a container on the same Mac.</strong><p>It is a different environment (operating system, Python, timezone, filesystem), not different hardware. Any machine you can reach over SSH works the same way.</p></li>
-      <li><strong>The bugs are seeded.</strong><p>"Three of three caught" is true by construction. This is a demonstration of a workflow, not a benchmark of the agents.</p></li>
-      <li><strong>The Mac could have seen one of them.</strong><p>The timezone bug also fails on the Mac if you set <code>TZ=UTC</code>. The point is who notices, who decides which side is wrong, and where that decision is written down.</p></li>
-      <li><strong>The humans in this replay were scripted.</strong><p>The agents and Switch's notices are real. Only macOS on Apple silicon was tested, and the Switch Console GUI path was not.</p></li>
+    <ul class="stats">
+      <li><b>2m42s</b><span>median time from the request to ready for approval. Five automated runs with scripted humans, 2m25s to 2m49s.</span></li>
+      <li><b>5 of 5</b><span>runs where the merged <code>main</code> passed on both machines.</span></li>
+      <li><b>8</b><span>Switch features doing real work. Take Switch away and two test scripts are left.</span></li>
+      <li><b>2</b><span>earlier runs failed. Both causes are fixed, and this page says what they were.</span></li>
     </ul>
+    <nav class="judges" aria-label="Where to find what you are scoring">
+      <span>For judges</span>
+      <a href="#how"><b>Use of Switch</b>The six steps</a>
+      <a href="#run"><b>Technical execution</b>Run it yourself</a>
+      <a href="#problem"><b>Creativity and impact</b>The problem</a>
+      <a href="#film"><b>Presentation</b>The film</a>
+    </nav>
   </div>
 </section>
 
-<section id="run" aria-labelledby="run-h" style="padding-top:0">
+<!-- ============ 01 THE PROBLEM ============ -->
+<section class="sec sec--alt" id="problem" aria-labelledby="problem-h">
   <div class="wrap">
     <div class="sec-h">
-      <h2 id="run-h">Run it yourself</h2>
-      <p>Three levels, from twenty seconds to the whole room. Switch 0.31.0 is pinned and nothing needs an account beyond the agents you already use.</p>
+      <p class="eyebrow">01 · The problem</p>
+      <h2 id="problem-h">CI says red. It never says which side is wrong.</h2>
+      <p class="lede">Code can pass on one machine and fail on another because of the environment, not the logic. Someone has to decide which side is right, and write the decision down. Three planted bugs show it.</p>
     </div>
-    <div class="runs">
-      <div class="run"><div><h3>See the bug</h3><p>Needs Docker and <code>uv</code>. No Switch.</p></div>
+    <div class="bugs">
+      <article class="bug">
+        <h3>A file name's letter case</h3>
+        <code class="line">open(ROOT / "config" / "Settings.json")</code>
+        <p class="why">The file on disk is <code>config/settings.json</code>.</p>
+        <div class="res">
+          <div><span class="chip chip--pass">Mac</span><span>macOS ignores letter case by default, so the file opens.</span></div>
+          <div><span class="chip chip--fail">Linux</span><span>Linux keeps letter case, so these are two different files.</span><span class="err">FileNotFoundError: No such file or directory: 'config/Settings.json'</span></div>
+        </div>
+      </article>
+      <article class="bug">
+        <h3>A newer Python API</h3>
+        <code class="line">datetime.datetime.now(datetime.UTC)</code>
+        <p class="why"><code>datetime.UTC</code> arrived in Python 3.11. The project says it supports 3.9 and newer.</p>
+        <div class="res">
+          <div><span class="chip chip--pass">Mac</span><span>Python 3.15.2 has it.</span></div>
+          <div><span class="chip chip--fail">Linux</span><span>Python 3.10.12 predates it.</span><span class="err">AttributeError: module 'datetime' has no attribute 'UTC'</span></div>
+        </div>
+      </article>
+      <article class="bug bug--gap">
+        <span class="flag">A disagreement, not a crash</span>
+        <h3>A timezone</h3>
+        <code class="line">datetime.fromtimestamp(ev["ts"]).date()</code>
+        <p class="why">The test expects two events on Nov 1 and two on Nov 2, a value captured on a machine set to IST. Which side is wrong?</p>
+        <div class="res">
+          <div><span class="chip chip--pass">Mac</span><span>In Asia/Kolkata, two events fall on Nov 2.</span></div>
+          <div><span class="chip chip--fail">Linux</span><span>In UTC, all four events fall on Nov 1.</span><span class="err">AssertionError: assert {'2024-11-01': 4} == {'2024-11-01': 2, '2024-11-02': 2}</span></div>
+        </div>
+      </article>
+    </div>
+    <div class="try">
+      <span>See all three in 20 seconds. Needs Docker and <code>uv</code>, and no Switch.</span>
+      <div class="code"><button class="copy" type="button">Copy</button><pre><code>make evidence</code></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 HOW SWITCH IS USED ============ -->
+<section class="sec" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">02 · How Switch is used</p>
+      <h2 id="how-h">Give the argument a room.</h2>
+      <p class="lede">A Claude Code agent on a Mac and a Codex agent on Linux join one Switch room with a PM and a QA lead. Each step below is a real moment of the film. It says which Switch feature does the work, and what would break without it.</p>
+    </div>
+
+    <ul class="cast" aria-label="Who is in the room">
+      <li><span class="av av--dev" aria-hidden="true">Dm</span><div><b>dev-mac</b><span>Claude Code, on the Mac. An AI agent.</span></div></li>
+      <li><span class="av av--qa" aria-hidden="true">Ql</span><div><b>qa-linux</b><span>Codex, in a Linux container. An AI agent.</span></div></li>
+      <li><span class="av" aria-hidden="true">M</span><div><b>maya</b><span>The PM. Typed by Claude Code in the film.</span></div></li>
+      <li><span class="av" aria-hidden="true">S</span><div><b>sam</b><span>The QA lead. A second AI agent in the film.</span></div></li>
+      <li><span class="av" aria-hidden="true">Dv</span><div><b>dave</b><span>The intern. Typed by Claude Code in the film.</span></div></li>
+    </ul>
+    <p class="cast-note">There is no human teammate in the recording. <a href="#real">What is real, and what is not</a>.</p>
+
+    <div class="steps">
+
+      <article class="step">
+        <div class="step__text">
+          <p class="step__no"><b>1</b>Set up</p>
+          <h3>One file builds the room.</h3>
+          <p class="body">A single Switch template puts <code>dev-mac</code> on the machine <code>mac-host</code> and <code>qa-linux</code> on <code>linux-box</code>. It then opens the room with its roles, its instructions and a first message. Each agent reports the environment it runs in.</p>
+          <dl class="facts">
+            <div><dt>Switch feature</dt><dd><ul class="feat"><li>Template</li><li>Machines</li><li>Roles</li></ul></dd></div>
+            <div><dt>Without it</dt><dd>Wiring two machines, two vendors and a chat room by hand.</dd></div>
+          </dl>
+          <p class="watch"><button type="button" data-seek="13"><span>0:13</span>Watch this part</button></p>
+        </div>
+        <figure class="fig step__media">
+          <a class="zoom" href="assets/img/zoom/roles.jpg" data-zoom title="Enlarge: the zoomed frame from the film"><img src="assets/img/roles.jpg" width="1500" height="844" loading="lazy" alt="Switch's own room page: the implementer role is exclusive and held by dev-mac, and the verifier role is held by qa-linux."></a>
+          <figcaption><b>FIG 2</b>The room page in Switch's dashboard. <code>implementer</code> is exclusive and held by <code>dev-mac</code>. <code>verifier</code> is held by <code>qa-linux</code>.</figcaption>
+        </figure>
+      </article>
+
+      <article class="step step--r">
+        <div class="step__text">
+          <p class="step__no"><b>2</b>Ask</p>
+          <h3>A person names a job, not a computer.</h3>
+          <p class="body">maya types <code>@verifier please verify branch feat/weekly-report on your side and tell us what you find.</code> Switch delivers it to whichever agent holds that role. Here that is the Codex agent on Linux.</p>
+          <dl class="facts">
+            <div><dt>Switch feature</dt><dd><ul class="feat"><li>Roles</li><li>Mixed vendors in one room</li></ul></dd></div>
+            <div><dt>Without it</dt><dd>Hard-coded agent names, and two agents able to push over each other.</dd></div>
+          </dl>
+          <p class="watch"><button type="button" data-seek="37"><span>0:37</span>Watch this part</button></p>
+        </div>
+        <figure class="fig step__media">
+          <a class="zoom" href="assets/img/zoom/ask.jpg" data-zoom title="Enlarge: the zoomed frame from the film"><img src="assets/img/ask.jpg" width="1500" height="844" loading="lazy" alt="The Mattermost chat: maya asks @verifier to verify the branch, and the Codex agent starts work, with a Show activity button."></a>
+          <figcaption><b>FIG 3</b>The chat, which is Mattermost and ships with Switch. The Linux agent starts work as soon as the request lands.</figcaption>
+        </figure>
+      </article>
+
+      <article class="step">
+        <div class="step__text">
+          <p class="step__no"><b>3</b>Check</p>
+          <h3>The Linux agent checks where the bug lives.</h3>
+          <p class="body">Show activity opens the agent's real commands as it runs them. After about 78 seconds it reports 0 of 3 on Linux, saves the raw evidence as room documents, and tags <code>@implementer</code>.</p>
+          <dl class="facts">
+            <div><dt>Switch feature</dt><dd><ul class="feat"><li>Machines</li><li>Room documents</li></ul></dd></div>
+            <div><dt>Without it</dt><dd>The Linux-only failures are invisible from the Mac.</dd></div>
+          </dl>
+          <p class="watch"><button type="button" data-seek="50"><span>0:50</span>Watch this part</button></p>
+        </div>
+        <figure class="fig step__media">
+          <a class="zoom" href="assets/img/zoom/report.jpg" data-zoom title="Enlarge: the zoomed frame from the film"><img src="assets/img/report.jpg" width="1500" height="844" loading="lazy" alt="The chat: the Linux agent reports three failures, a file name case mismatch, datetime.UTC missing on Python 3.10, and day bucketing in the wrong timezone, and says the evidence is saved in matrix-linux and repro-log."></a>
+          <figcaption><b>FIG 4</b>The report from <code>qa-linux</code>: three failures, each with its cause, and where the evidence is saved.</figcaption>
+        </figure>
+      </article>
+
+      <article class="step step--r">
+        <div class="step__text">
+          <p class="step__no"><b>4</b>Fix</p>
+          <h3>The Mac agent reads the room before it edits.</h3>
+          <p class="body"><code>dev-mac</code> reads <code>matrix-linux</code>, <code>repro-log</code> and a <code>conventions</code> document that a person wrote and agents cannot edit. It fixes all three bugs and pushes about 102 seconds after the request. It also changes one test, and says why.</p>
+          <p class="quote">"The old values were IST days from the author's machine; convention 1 says UTC days."</p>
+          <dl class="facts">
+            <div><dt>Switch feature</dt><dd><ul class="feat"><li>Room documents</li></ul></dd></div>
+            <div><dt>Without it</dt><dd>The context lives in one agent's prompt, or nowhere.</dd></div>
+          </dl>
+          <p class="watch"><button type="button" data-seek="77"><span>1:17</span>Watch this part</button></p>
+        </div>
+        <figure class="fig step__media">
+          <a class="zoom" href="assets/img/zoom/documents.jpg" data-zoom title="Enlarge: the zoomed frame from the film"><img src="assets/img/documents.jpg" width="1500" height="844" loading="lazy" alt="Switch's own room page, Documents list: repro-log by qa-linux, conventions, matrix-mac by dev-mac, and matrix-linux by qa-linux."></a>
+          <figcaption><b>FIG 5</b>The room's documents in Switch's dashboard, and who wrote each. <code>conventions</code> was written by a person.</figcaption>
+        </figure>
+      </article>
+
+      <article class="step">
+        <div class="step__text">
+          <p class="step__no"><b>5</b>Approve</p>
+          <h3>Nothing merges until someone says yes.</h3>
+          <p class="body">Linux checks the new commit, and both machines pass 3 of 3. <code>dev-mac</code> asks <code>@sam</code> and waits. In the film sam is a second AI agent that reads the evidence and decides on its own. The gate itself is a rule in the room's instructions, which the agent follows. Switch records who replied, by name.</p>
+          <dl class="facts">
+            <div><dt>Switch feature</dt><dd><ul class="feat"><li>Real identities</li><li>Approval recorded by name</li></ul></dd></div>
+            <div><dt>Without it</dt><dd>A bot with merge rights and no gate.</dd></div>
+          </dl>
+          <p class="watch"><button type="button" data-seek="98"><span>1:38</span>Watch this part</button></p>
+        </div>
+        <figure class="fig step__media">
+          <a class="zoom" href="assets/img/zoom/approval.jpg" data-zoom title="Enlarge: the zoomed frame from the film"><img src="assets/img/approval.jpg" width="1500" height="844" loading="lazy" alt="The chat: dev-mac says both environments are green and asks sam, sam replies approved, and the Mac agent starts the merge."></a>
+          <figcaption><b>FIG 6</b>The gate. <code>dev-mac</code> asked, sam replied <em>approved</em>, and only then did the merge start.</figcaption>
+        </figure>
+      </article>
+
+      <article class="step step--r">
+        <div class="step__text">
+          <p class="step__no"><b>6</b>Protect</p>
+          <h3>Switch itself refuses the intern.</h3>
+          <p class="body">dave tells the agent to push to main right now. Switch refuses it at delivery, and <code>main</code> is unchanged. The refusal came 0.1 seconds after dave's message, and the agent showed no Working status. That is one recorded sample. The refusal text says the chat account is not linked to a Switch user, so it is not yet a clean allow-list message (see the feedback below). The rule lives in the platform, not in a prompt.</p>
+          <dl class="facts">
+            <div><dt>Switch feature</dt><dd><ul class="feat"><li>Addressing policy</li></ul></dd></div>
+            <div><dt>Without it</dt><dd>A prompt that says "please don't", which a clever message can talk around.</dd></div>
+          </dl>
+          <p class="watch"><button type="button" data-seek="120"><span>2:00</span>Watch this part</button></p>
+        </div>
+        <figure class="fig step__media">
+          <a class="zoom" href="assets/img/zoom/refusal.jpg" data-zoom title="Enlarge: the zoomed frame from the film"><img src="assets/img/refusal.jpg" width="1500" height="844" loading="lazy" alt="The chat: dave asks the agent to push to main right now, and Switch answers that the agent only takes instructions from its owner."></a>
+          <figcaption><b>FIG 7</b>The refusal. Switch posts it in the channel, under the agent's name.</figcaption>
+        </figure>
+      </article>
+    </div>
+
+    <div class="closer">
+      <p>Take Switch away and what is left is two test scripts.</p>
+      <span>Eight Switch features carry the workflow: template, machines, mixed vendors, roles, room documents, addressing policy, real identities and approvals recorded by name.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 PROOF ============ -->
+<section class="sec band" id="proof" aria-labelledby="proof-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">03 · Proof</p>
+      <h2 id="proof-h">One real run, to the second.</h2>
+      <p class="lede">The recorded run took 2 minutes 53 seconds from request to merge. The film speeds up the waiting, and every speed is labelled on screen. The times below are real run time, measured from the request, not film time.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline__bar" role="img" aria-label="Timeline of the run in real time: Linux agent checks for 1 minute 18 seconds, Mac agent fixes for 24 seconds, Linux agent checks again for 45 seconds, approval takes 19 seconds, the merge takes 8 seconds.">
+        <i style="flex:77.6;background:#6FB3FF"></i><i style="flex:24.4;background:#F5B544"></i><i style="flex:44.7;background:#6FB3FF"></i><i style="flex:18.9;background:#EAF1F6"></i><i style="flex:7.6;background:#F5B544"></i>
+      </div>
+      <ul class="legend">
+        <li style="--c:#6FB3FF"><b>Linux agent checks</b><em>0:00 to 1:18</em><span>0 of 3 pass. Evidence saved to the room.</span></li>
+        <li style="--c:#F5B544"><b>Mac agent fixes</b><em>1:18 to 1:42</em><span>All three bugs, one test changed, pushed.</span></li>
+        <li style="--c:#6FB3FF"><b>Linux agent checks again</b><em>1:42 to 2:27</em><span>3 of 3 on both machines.</span></li>
+        <li style="--c:#EAF1F6"><b>Approval</b><em>2:27 to 2:46</em><span>sam, an AI agent in the film, approves in the room.</span></li>
+        <li style="--c:#F5B544"><b>Merge</b><em>2:46 to 2:53</em><span>The merge commit lands on <code>main</code>.</span></li>
+      </ul>
+    </div>
+
+    <div class="pairs">
+      <div class="panel">
+        <h3>Five automated runs</h3>
+        <p>From the request to ready for approval. Each run ended with checks that the merge commit is on <code>main</code> and that merged <code>main</code> passes 3 of 3 on the Mac and in the Linux container.</p>
+        <ul class="runs" aria-label="Time from request to ready for approval, per run">
+          <li><span>Run 1</span><span class="trk"><i style="width:90%"></i></span><b>2m42s</b></li>
+          <li><span>Run 2</span><span class="trk"><i style="width:93.3%"></i></span><b>2m48s</b></li>
+          <li><span>Run 3</span><span class="trk"><i style="width:80.6%"></i></span><b>2m25s</b></li>
+          <li><span>Run 4</span><span class="trk"><i style="width:84.4%"></i></span><b>2m32s</b></li>
+          <li><span>Run 5</span><span class="trk"><i style="width:93.9%"></i></span><b>2m49s</b></li>
+        </ul>
+        <p class="small">Scale: 0 to 3 minutes. Run to run, the verifier's first pass alone ranged from 76 s to 149 s. <a href="https://github.com/saurabh4269/parity-room#measured-runs" style="color:#fff">The full table</a>.</p>
+      </div>
+      <div class="panel">
+        <h3>The two runs that failed first</h3>
+        <p>Both causes were found and fixed before these five.</p>
+        <ul class="fails">
+          <li><b>A missed hand-off.</b>The verifier forgot to tag <code>@implementer</code> on its green message, so the Mac agent never woke. Hand-offs now use Switch's <code>send_targeted_message</code> tool, which always addresses the right role.</li>
+          <li><b>A sleeping Mac.</b>The Mac went to sleep mid-run and paused the agent and the Docker VM. The Mac controller now holds a no-idle-sleep assertion while it runs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="refuse">
+      <strong>0.1 s</strong>
+      <p>Switch's answer to dave came 0.1 seconds after his message, and the agent showed no Working status. A script, <code>scripts/refusal-check.py</code>, also checks that <code>main</code> is unchanged and that maya, who is on the list, gets an answer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 WHAT IS REAL ============ -->
+<section class="sec" id="real" aria-labelledby="real-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">04 · What's real</p>
+      <h2 id="real-h">What is real, and what is not.</h2>
+      <p class="lede">A demo is only worth watching if you can trust it. Here is exactly what the film is, and what it is not.</p>
+    </div>
+    <div class="twocol">
+      <section class="col col--real" aria-labelledby="real-yes">
+        <h3 id="real-yes"><i aria-hidden="true">&#10003;</i>Real</h3>
+        <ul>
+          <li><b>Switch 0.31.0, Mattermost, rooms, roles, documents and the addressing policy.</b> Official images, pinned.</li>
+          <li><b>Claude Code and Codex.</b> Real sessions, started by Switch's agent controller. No mocked model.</li>
+          <li><b>The screen.</b> A real Chrome, a real Terminal and Switch's own dashboard, recorded with Cap. No page was restyled.</li>
+          <li><b>The input.</b> The mouse and keyboard are driven at operating-system level, so the cursor you see is the real cursor.</li>
+          <li><b>The result.</b> The merge commit exists, and the merged <code>main</code> passes 3 of 3 on the Mac and in the Linux container.</li>
+          <li><b>The numbers.</b> Five automated runs, each followed by outcome checks. Two earlier runs failed, and they are listed in the proof above.</li>
+        </ul>
+      </section>
+      <section class="col col--not" aria-labelledby="real-no">
+        <h3 id="real-no"><i aria-hidden="true">!</i>Not real, said plainly</h3>
+        <ul>
+          <li><b>There is no human teammate in the film.</b> Claude Code types maya and dave through this Mac's real mouse and keyboard. sam is a second AI agent.</li>
+          <li><b>The Linux machine is a container</b> on the same Mac. A different environment, not different hardware.</li>
+          <li><b>The three bugs are planted.</b> "Three of three caught" is true by construction. This is a demonstration, not a benchmark.</li>
+          <li><b>The Mac could have seen the timezone bug</b> with <code>TZ=UTC</code>. The point is who decides, and where the decision is written down.</li>
+          <li><b>The voice, the music and the sound effects are AI-generated.</b> Waiting is sped up and labelled, and a few seconds of scrolling are cut.</li>
+          <li><b>Tested on macOS (Apple silicon) and Switch 0.31.0 only.</b> A Linux host, Windows, a second real person and the Console GUI import were not tested.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 FEEDBACK ============ -->
+<section class="sec sec--alt" id="feedback" aria-labelledby="fb-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">05 · Feedback for Switch</p>
+      <h2 id="fb-h">What I would tell the Switch team.</h2>
+      <p class="lede">From building on Switch 0.31.0. Each item is marked <em>observed</em> (I hit it) or <em>read</em> (found in the source or docs).</p>
+    </div>
+    <div class="fb">
+      <div>
+        <h3>What worked</h3>
+        <ul>
+          <li><b>One template, two agents, one room.</b> It lints first and rolls back if the room fails.<span class="tag">observed</span></li>
+          <li><b>Roles are the right address.</b> An exclusive role makes "one agent pushes at a time" a platform fact.<span class="tag">observed</span></li>
+          <li><b>Single-writer documents.</b> A person's conventions document is read-only to agents, so it can settle a dispute.<span class="tag">observed</span></li>
+          <li><b>The addressing policy is real enforcement.</b> An unlisted user was refused and the agent did not act.<span class="tag">observed</span></li>
+          <li><b>Headless controllers</b> made a two-machine setup scriptable, with no Console GUI.<span class="tag">observed</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>What I would fix</h3>
+        <ul>
+          <li><b>A controller in a container needs a network trick.</b> <code>--server</code> accepts plain http only on loopback, so I joined the container to the Switch container's network.<span class="tag">read</span><span class="tag">workaround observed</span></li>
+          <li><b>Docs and version drift.</b> The controller README on <code>main</code> shows <code>--no-self-update</code>. The 0.31.0 controller rejects it.<span class="tag">observed</span></li>
+          <li><b><code>install.sh</code> cannot install stable releases.</b> It needs a <code>.sig</code> file that stable releases do not ship, so I built the controller from source at the release tag.<span class="tag">read</span></li>
+          <li><b>The refusal wording misleads under a custom rule.</b> It says the account is not linked to a Switch user, though the policy also admitted two named people.<span class="tag">observed</span></li>
+          <li><b>No gateway endpoint lists the people that addressing rules need.</b> I read their ids from Postgres.<span class="tag">observed</span></li>
+          <li><b>A room's documents are invisible from the chat.</b> The Gateway shows them, but nothing in the chat links there.<span class="tag">observed</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fb__more"><a class="btn btn--line" href="https://github.com/saurabh4269/parity-room/blob/main/docs/feedback.md">Read all nine items</a></p>
+  </div>
+</section>
+
+<!-- ============ 06 RUN IT ============ -->
+<section class="sec band" id="run" aria-labelledby="run-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">06 · Run it</p>
+      <h2 id="run-h">Check it yourself.</h2>
+      <p class="lede">Switch 0.31.0 is pinned. Nothing needs an account beyond the agents you already use. Four levels, from twenty seconds to the whole room.</p>
+    </div>
+    <div class="runit">
+      <div class="run">
+        <div><h3>See the bug<span>20 SECONDS</span></h3><p>Needs Docker and <code>uv</code>. No Switch.</p></div>
         <div class="code"><button class="copy" type="button">Copy</button><pre><code>git clone https://github.com/saurabh4269/parity-room
 cd parity-room
-make evidence</code></pre></div></div>
-      <div class="run"><div><h3>Bring up the room</h3><p>Needs Claude Code and Codex signed in. One command builds the stack, enrolls both machines and creates the agents and the room.</p></div>
+make evidence</code></pre></div>
+      </div>
+      <div class="run">
+        <div><h3>Bring up the room<span>5 TO 8 MINUTES THE FIRST TIME</span></h3><p>Needs Docker, Node 24, pnpm, <code>uv</code>, and Claude Code and Codex signed in. One command builds the stack, enrolls both machines and creates the agents and the room.</p></div>
         <div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="c"># once: copies your Codex login into a Docker volume (read the note first)</span>
 make codex-auth
-make demo</code></pre></div></div>
-      <div class="run"><div><h3>Check the outcome</h3><p>Drives a full run with scripted humans, then proves the merged <code>main</code> passes on both machines.</p></div>
-        <div class="code"><button class="copy" type="button">Copy</button><pre><code>python3 scripts/e2e.py</code></pre></div></div>
+make demo
+<span class="c"># once: so that Switch can refuse dave</span>
+make policy</code></pre></div>
+      </div>
+      <div class="run">
+        <div><h3>Repeat the run in Switch's own UI<span>ABOUT 10 MINUTES</span></h3><p>Open the Gateway and the chat, type the request as maya, watch the Linux agent, and approve as sam. <a href="https://github.com/saurabh4269/parity-room/blob/main/docs/replicate.md">The steps</a> say what you should see at each one.</p></div>
+        <div class="code"><button class="copy" type="button">Copy</button><pre><code><span class="c"># the Gateway, Switch's dashboard</span>
+open http://localhost:3000
+<span class="c"># the chat: sign in as maya (password in work/humans.json)</span>
+open http://localhost:8065</code></pre></div>
+      </div>
+      <div class="run">
+        <div><h3>Check the outcome<span>ABOUT 3 MINUTES</span></h3><p>Drives a full run with scripted humans, then proves the merged <code>main</code> passes on both machines.</p></div>
+        <div class="code"><button class="copy" type="button">Copy</button><pre><code>python3 scripts/e2e.py</code></pre></div>
+      </div>
     </div>
-    <p class="numbers">Five automated runs took <b>2m25s to 2m49s</b> from request to ready-for-approval; <code>main</code> was green on both machines every time. <a href="https://github.com/saurabh4269/parity-room#measured-runs">The table, including the runs that failed first, is in the README.</a></p>
+    <div class="links">
+      <a class="btn btn--amber" href="https://github.com/saurabh4269/parity-room">Source on GitHub</a>
+      <a class="btn" href="https://github.com/saurabh4269/parity-room/blob/main/templates/parity-room.template.yaml">The Switch template</a>
+      <a class="btn" href="https://github.com/saurabh4269/parity-room/tree/main/demo">How the film was recorded</a>
+      <a class="btn" href="https://github.com/saurabh4269/parity-room#readme">README</a>
+    </div>
   </div>
 </section>
+
 </main>
 
 <footer>
@@ -236,11 +450,11 @@ make demo</code></pre></div></div>
     <div>
       <h3>Parity Room</h3>
       <p>Built for the Flip the Switch hackathon by WeMakeDevs, DevTools Academy and Switch. MIT licensed.</p>
-      <p><a href="https://github.com/saurabh4269/parity-room">Source on GitHub</a>, <a href="https://github.com/sandbox-quantum/switch">Switch</a>.</p>
+      <p><a href="https://github.com/saurabh4269/parity-room">Source on GitHub</a> · <a href="https://www.switchagents.ai">Switch</a></p>
     </div>
     <div>
       <h3>How this page was made</h3>
-      <p>Layout explored in Google Stitch and built by hand, with fonts Bricolage Grotesque and Martian Mono (SIL Open Font License), self-hosted. The replay is real data from <a href="data/replay.json">replay.json</a>.</p>
+      <p>Hand-written HTML and CSS, with the fonts Bricolage Grotesque and Martian Mono (SIL Open Font License), self-hosted. No analytics, and nothing from another site loads until you press play. The page has no player or dashboard of its own: every picture is a frame of the recorded film or a screenshot of Switch's own UI.</p>
     </div>
   </div>
 </footer>
